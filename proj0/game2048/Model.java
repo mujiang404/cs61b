@@ -1,7 +1,12 @@
 package game2048;
 
+import org.junit.Test;
+
 import java.util.Formatter;
 import java.util.Observable;
+
+import static java.lang.constant.ConstantDescs.NULL;
+import static org.junit.Assert.assertEquals;
 
 
 /** The state of a game of 2048.
@@ -107,17 +112,65 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
+
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        boolean changed = false;
+
+        board.setViewingPerspective(side);
+        int size = board.size();
+
+        for (int c = 0; c < size; c++) {
+
+            int targetRow = size - 1;      // 当前能放 tile 的位置
+            int lastMergeRow = size;      // 防止重复 merge
+
+            for (int r = size - 2; r >= 0; r--) {
+
+                Tile t = board.tile(c, r);
+                if (t == null) {
+                    continue;
+                }
+
+                int moveRow = r;
+
+                // 往上移动
+                while (moveRow + 1 <= targetRow && board.tile(c, moveRow + 1) == null) {
+                    moveRow++;
+                }
+
+                // 可以 merge
+                if (moveRow + 1 <= targetRow) {
+                    Tile above = board.tile(c, moveRow + 1);
+
+                    if (above != null && above.value() == t.value() && (moveRow + 1) < lastMergeRow) {
+                        board.move(c, moveRow + 1, t);
+                        score += t.value() * 2;
+                        lastMergeRow = moveRow + 1;
+                        changed = true;
+                        continue;
+                    }
+                }
+
+                // 普通移动
+                if (moveRow != r) {
+                    board.move(c, moveRow, t);
+                    changed = true;
+                }
+            }
+        }
+
+        board.setViewingPerspective(Side.NORTH);
+
         checkGameOver();
         if (changed) {
             setChanged();
         }
+
+        
         return changed;
     }
 
@@ -138,6 +191,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+
+        for (Tile i : b) {
+            if (i == null) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -148,6 +208,14 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (Tile i : b) {
+            if (i != null) {
+                if (i.value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+
+        }
         return false;
     }
 
@@ -159,7 +227,38 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        int size = b.size();
+
+        for (int r = 0; r < size; r++) {
+            for (int c = 0; c < size; c++) {
+
+                Tile t = b.tile(r, c);
+
+                // 情况1：有空格
+                if (t == null) {
+                    return true;
+                }
+
+                // 情况2：右边相同
+                if (c < size - 1) {
+                    Tile right = b.tile(r, c + 1);
+                    if (right != null && right.value() == t.value()) {
+                        return true;
+                    }
+                }
+
+                // 情况3：上面相同
+                if (r < size - 1) {
+                    Tile up = b.tile(r + 1, c);
+                    if (up != null && up.value() == t.value()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         return false;
+
     }
 
 
