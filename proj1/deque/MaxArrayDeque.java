@@ -4,13 +4,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
-    T[] items;
-    int length;
-    int size;
-    int front;
-    int rear;
+    private T[] items;
+    private int length;
+    private int size;
+    private int front;
+    private int rear;
 
-    Comparator<T> comp;
+    private Comparator<T> comp;
 
     public MaxArrayDeque(Comparator<T> c) {
         items = (T[])new Object[8];
@@ -81,6 +81,9 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     public boolean equals(Object o) {
         Deque<T> d = (Deque<T>) o;
+
+        if (d.size() != size) return false;
+
         for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
                 return false;
@@ -161,7 +164,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         return items[(front + index) % length];
     }
 
-    public class madIterator implements Iterator<T> {
+    private class madIterator implements Iterator<T> {
         int index = 0;
         public boolean hasNext() {
             return index < size;

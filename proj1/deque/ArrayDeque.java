@@ -3,11 +3,11 @@ package deque;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
-    T[] items;
-    int length;
-    int size;
-    int front;
-    int rear;
+    private T[] items;
+    private int length;
+    private int size;
+    private int front;
+    private int rear;
 
     @Override
     public int size() {
@@ -46,6 +46,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     public boolean equals(Object o) {
         Deque<T> d = (Deque<T>) o;
+
+        if (d.size() != size) return false;
+
         for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
                 return false;
@@ -125,7 +128,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return items[(front + index + 1) % length];
     }
 
-    public class adIterator implements Iterator<T> {
+    private class adIterator implements Iterator<T> {
         int index = 0;
         public boolean hasNext() {
             return index < size;
