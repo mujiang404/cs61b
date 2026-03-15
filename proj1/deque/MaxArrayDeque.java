@@ -55,7 +55,7 @@ public class MaxArrayDeque<T> {
     }
 
 
-    private int size() {
+    public int size() {
         return size;
     }
 
@@ -63,7 +63,7 @@ public class MaxArrayDeque<T> {
 
 
 
-    private void printDeque() {
+    public void printDeque() {
         for (int i = 0; i < size; i++) {
             System.out.print(get(i));
             if (i == size) {
@@ -99,7 +99,7 @@ public class MaxArrayDeque<T> {
 
      */
 
-    private void addFirst(T item) {
+    public void addFirst(T item) {
         if (size == length) {
             resize(length * 2);
         }
@@ -109,7 +109,7 @@ public class MaxArrayDeque<T> {
         front = (front - 1 + length) % length;
     }
 
-    private void addLast(T item) {
+    public void addLast(T item) {
         if (size == length) {
             resize(length * 2);
         }
@@ -118,7 +118,7 @@ public class MaxArrayDeque<T> {
         size++;
     }
 
-    private T removeFirst() {
+    public T removeFirst() {
         if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
@@ -131,7 +131,7 @@ public class MaxArrayDeque<T> {
         return item;
     }
 
-    private T removeLast() {
+    public T removeLast() {
         if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
@@ -144,7 +144,7 @@ public class MaxArrayDeque<T> {
         return item;
     }
 
-    private void resize(int newSize) {
+    public void resize(int newSize) {
         T[] newitems = (T[]) new Object[newSize];
         int newfront = 0;
         int newrear = 1;
@@ -162,7 +162,7 @@ public class MaxArrayDeque<T> {
 
     }
 
-    private T get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= size) {
             return null;
         }
