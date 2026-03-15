@@ -27,7 +27,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (size == 0) {
             return null;
         }
-        T maxValue = get(1);
+        T maxValue = get(0);
         for (T i : this) {
             int isBig = comp.compare(i, maxValue);
             if (isBig > 0) {
@@ -41,7 +41,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (size == 0) {
             return null;
         }
-        T maxValue = get(1);
+        T maxValue = get(0);
         for (T i : this) {
             int isBig = c.compare(i, maxValue);
             if (isBig > 0) {
@@ -70,7 +70,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
     public void printDeque() {
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print(get(i));
             if (i == size) {
                 break;
@@ -81,7 +81,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     public boolean equals(Object o) {
         Deque<T> d = (Deque<T>) o;
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
                 return false;
             }
@@ -140,9 +140,9 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         int newrear = newSize / 2;
         int currentpos = newrear;
 
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             newitems[currentpos] = get(i);
-            currentpos = (currentpos + 1) % 8;
+            currentpos = (currentpos + 1) % newSize;
         }
 
         length = newSize;
@@ -153,7 +153,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T get(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             return null;
         }
 
@@ -162,9 +162,9 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public class madIterator implements Iterator<T> {
-        int index = 1;
+        int index = 0;
         public boolean hasNext() {
-            return index <= size;
+            return index < size;
         }
 
         public T next() {

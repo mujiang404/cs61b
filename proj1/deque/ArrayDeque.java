@@ -35,7 +35,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
 
     public void printDeque() {
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print(get(i));
             if (i == size) {
                 break;
@@ -46,7 +46,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     public boolean equals(Object o) {
         Deque<T> d = (Deque<T>) o;
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
                 return false;
             }
@@ -108,7 +108,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         for (int i = 1; i <= size; i++) {
             newitems[currentpos] = get(i);
-            currentpos = (currentpos + 1) % 8;
+            currentpos = (currentpos + 1) % newSize;
         }
 
         length = newSize;
@@ -119,16 +119,16 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T get(int index) {
-        if (index < 0 || index > size) {
+        if (index < 0 || index >= size) {
             return null;
         }
-        return items[(front + index) % length];
+        return items[(front + index + 1) % length];
     }
 
     public class adIterator implements Iterator<T> {
-        int index = 1;
+        int index = 0;
         public boolean hasNext() {
-            return index <= size;
+            return index < size;
         }
 
         public T next() {

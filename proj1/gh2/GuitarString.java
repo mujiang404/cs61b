@@ -61,7 +61,7 @@ public class GuitarString {
 
 
         double firstValue = buffer.removeFirst();
-        double secondValue = buffer.get(1);
+        double secondValue = buffer.get(0);
         double addedVuale =  (firstValue + secondValue) / 2 * DECAY;
         buffer.addLast(addedVuale);
 
@@ -70,7 +70,7 @@ public class GuitarString {
     /* Return the double at the front of the buffer. */
     public double sample() {
         // TODO: Return the correct thing.
-        double result = buffer.get(1);
+        double result = buffer.get(0);
         return result;
     }
 }

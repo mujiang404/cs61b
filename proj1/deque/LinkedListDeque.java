@@ -10,7 +10,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
 
     public void printDeque() {
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.print(get(i));
             if (i == size) {
                 break;
@@ -21,7 +21,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     public boolean equals(Object o) {
         Deque<T> d = (Deque<T>) o;
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
                 return false;
             }
@@ -86,11 +86,11 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     public T get(int index) {
 
 
-        if  (index > size) {
+        if  (index >= size &&  index < 0) {
             return null;
         }
         Node<T> currentNode = sentinel;
-        for (int i = index; i > 0; i--) {
+        for (int i = index; i >= 0; i--) {
             currentNode = currentNode.next;
         }
         return currentNode.value;
@@ -98,29 +98,34 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     }
 
-    private T getRecursiveHelper(int index, Node<T> currentnode) {
+    private T getRecursiveHelper(int index, Node<T> currentnode,boolean order) {
 
 
-        index = size + 1 - index > index ? index : size + 1 - index;
-        if (index == 0) {
+
+        if (index < 0) {
             return currentnode.value;
-        } else {
-            return getRecursiveHelper(index - 1, currentnode.next);
+        } else if(order) {
+            return getRecursiveHelper(index - 1, currentnode.next, order);
+
+        } else  {
+            return getRecursiveHelper(index - 1, currentnode.previous, order);
         }
     }
 
     public T getRecursive(int index) {
-        if  (index > size) {
+        if  (index >= size &&  index < 0) {
             return null;
         }
+        boolean order = size - index > index + 1;
+        index = order ? index + 1 : size - index;
 
-        return getRecursiveHelper(index, sentinel);
+        return getRecursiveHelper(index, sentinel, order);
     }
 
     public class LLDequeIterator implements Iterator<T> {
-        int index = 1;
+        int index = 0;
         public boolean hasNext() {
-            return index <= size;
+            return index < size;
         }
         public T next() {
             return get(index++);
