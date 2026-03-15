@@ -88,7 +88,9 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         Deque<T> d = (Deque<T>) o;
 
-        if (d.size() != size) {return false;}
+        if (d.size() != size) {
+            return false;
+        }
 
         for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
