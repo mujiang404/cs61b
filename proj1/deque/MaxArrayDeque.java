@@ -1,9 +1,9 @@
 package deque;
 
 import java.util.Comparator;
-import java.util.Iterator;
 
-public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
+
+public class MaxArrayDeque<T> {
     private T[] items;
     private int length;
     private int size;
@@ -13,11 +13,11 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     private Comparator<T> comp;
 
     public MaxArrayDeque(Comparator<T> c) {
-        items = (T[])new Object[8];
+        items = (T[]) new Object[8];
         length = 8;
         size = 0;
-        front = 3;
-        rear = 4;
+        front = 0;
+        rear = 1;
 
         comp = c;
     }
@@ -28,10 +28,11 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         T maxValue = get(0);
-        for (T i : this) {
-            int isBig = comp.compare(i, maxValue);
+        for (int i = 0; i < size; i++) {
+            T ii  = get(i);
+            int isBig = comp.compare(ii, maxValue);
             if (isBig > 0) {
-                maxValue = i;
+                maxValue = ii;
             }
         }
         return maxValue;
@@ -42,34 +43,27 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
             return null;
         }
         T maxValue = get(0);
-        for (T i : this) {
-            int isBig = c.compare(i, maxValue);
+        for (int i = 0; i < size; i++) {
+            T ii  = get(i);
+            int isBig = c.compare(ii, maxValue);
             if (isBig > 0) {
-                maxValue = i;
+                maxValue = ii;
             }
         }
         return maxValue;
 
     }
 
-    @Override
-    public int size() {
+
+    private int size() {
         return size;
     }
 
-    public MaxArrayDeque() {
-        items = (T[])new Object[8];
-        length = 8;
-        size = 0;
-        front = 3;
-        rear = 4;
-
-
-    }
 
 
 
-    public void printDeque() {
+
+    private void printDeque() {
         for (int i = 0; i < size; i++) {
             System.out.print(get(i));
             if (i == size) {
@@ -79,6 +73,8 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
+
+    /* thefirst
     public boolean equals(Object o) {
 
         if (o == null) {
@@ -91,7 +87,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         Deque<T> d = (Deque<T>) o;
 
-        if (d.size() != size) return false;
+        if (d.size() != size) {return false;}
 
         for (int i = 0; i < size; i++) {
             if (!(get(i).equals(d.get(i)))) {
@@ -101,7 +97,9 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         return true;
     }
 
-    public void addFirst(T item) {
+     */
+
+    private void addFirst(T item) {
         if (size == length) {
             resize(length * 2);
         }
@@ -111,7 +109,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         front = (front - 1 + length) % length;
     }
 
-    public void addLast(T item) {
+    private void addLast(T item) {
         if (size == length) {
             resize(length * 2);
         }
@@ -120,7 +118,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         size++;
     }
 
-    public T removeFirst() {
+    private T removeFirst() {
         if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
@@ -133,7 +131,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
         return item;
     }
 
-    public T removeLast() {
+    private T removeLast() {
         if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
@@ -147,7 +145,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     private void resize(int newSize) {
-        T[] newitems = (T[])new Object[newSize];
+        T[] newitems = (T[]) new Object[newSize];
         int newfront = 0;
         int newrear = 1;
         int currentpos = newrear;
@@ -164,16 +162,17 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     }
 
-    public T get(int index) {
+    private T get(int index) {
         if (index < 0 || index >= size) {
             return null;
         }
 
 
-        return items[(front + index) % length];
+        return items[(front + index + 1) % length];
     }
 
-    private class madIterator implements Iterator<T> {
+    /*the first
+    private class MADIterator implements Iterator<T> {
         int index = 0;
         public boolean hasNext() {
             return index < size;
@@ -187,6 +186,8 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public Iterator<T> iterator() {
-        return new MaxArrayDeque.madIterator();
+        return new MaxArrayDeque.MADIterator();
     }
+
+     */
 }
