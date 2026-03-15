@@ -15,7 +15,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public ArrayDeque() {
-        items = (T[])new Object[8];
+        items = (T[]) new Object[8];
         length = 8;
         size = 0;
         front = 3;
@@ -25,7 +25,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public ArrayDeque(int length) {
-        items = (T[])new Object[length];
+        items = (T[]) new Object[length];
         this.length = length;
         size = 0;
         front = 0;
@@ -45,6 +45,15 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+
+
         Deque<T> d = (Deque<T>) o;
 
         if (d.size() != size) return false;
@@ -78,7 +87,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T removeFirst() {
-        if ((float)length / (size - 1) > 4 && length > 8) {
+        if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
         if (size == 0) {
@@ -91,7 +100,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T removeLast() {
-        if ((float)length / (size - 1) > 4 && length > 8) {
+        if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
         if (size == 0) {
@@ -104,12 +113,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     private void resize(int newSize) {
-        T[] newitems = (T[])new Object[newSize];
-        int newfront = newSize / 2 - 1;
-        int newrear = newSize / 2;
+        T[] newitems = (T[]) new Object[newSize];
+        int newfront = 0;
+        int newrear = 1;
         int currentpos = newrear;
 
-        for (int i = 1; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             newitems[currentpos] = get(i);
             currentpos = (currentpos + 1) % newSize;
         }

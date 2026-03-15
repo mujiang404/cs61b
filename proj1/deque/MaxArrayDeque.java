@@ -80,6 +80,15 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean equals(Object o) {
+
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+
         Deque<T> d = (Deque<T>) o;
 
         if (d.size() != size) return false;
@@ -112,7 +121,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T removeFirst() {
-        if ((float)length / (size - 1) > 4 && length > 8) {
+        if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
         if (size == 0) {
@@ -125,7 +134,7 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public T removeLast() {
-        if ((float)length / (size - 1) > 4 && length > 8) {
+        if ((float) length / (size - 1) > 4 && length > 8) {
             resize(length / 2);
         }
         if (size == 0) {
@@ -139,8 +148,8 @@ public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     private void resize(int newSize) {
         T[] newitems = (T[])new Object[newSize];
-        int newfront = newSize / 2 - 1;
-        int newrear = newSize / 2;
+        int newfront = 0;
+        int newrear = 1;
         int currentpos = newrear;
 
         for (int i = 0; i < size; i++) {

@@ -20,7 +20,13 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
 
+        if (!(o instanceof Deque)) {
+            return false;
+        }
 
         Deque<T> d = (Deque<T>) o;
 
