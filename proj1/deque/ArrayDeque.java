@@ -24,7 +24,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     }
 
-    /* the first
+
     public ArrayDeque(int length) {
         items = (T[]) new Object[length];
         this.length = length;
@@ -33,7 +33,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         rear = 1;
     }
 
-     */
+
 
 
 

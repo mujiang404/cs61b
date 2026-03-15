@@ -1,9 +1,10 @@
 package deque;
 
 import java.util.Comparator;
+import java.util.Iterator;
 
 
-public class MaxArrayDeque<T> {
+public class MaxArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] items;
     private int length;
     private int size;
@@ -74,7 +75,7 @@ public class MaxArrayDeque<T> {
     }
 
 
-    /* thefirst
+
     public boolean equals(Object o) {
 
         if (o == null) {
@@ -97,7 +98,7 @@ public class MaxArrayDeque<T> {
         return true;
     }
 
-     */
+
 
     public void addFirst(T item) {
         if (size == length) {
@@ -171,7 +172,7 @@ public class MaxArrayDeque<T> {
         return items[(front + index + 1) % length];
     }
 
-    /*the first
+
     private class MADIterator implements Iterator<T> {
         int index = 0;
         public boolean hasNext() {
@@ -189,5 +190,5 @@ public class MaxArrayDeque<T> {
         return new MaxArrayDeque.MADIterator();
     }
 
-     */
+
 }
