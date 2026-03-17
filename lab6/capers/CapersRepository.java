@@ -1,6 +1,9 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+
 import static capers.Utils.*;
 
 /** A repository for Capers 
@@ -18,7 +21,7 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
+    static final File CAPERS_FOLDER = new File("capers"); // TODO Hint: look at the `join`
                                             //      function in Utils
 
     /**
@@ -32,6 +35,16 @@ public class CapersRepository {
      */
     public static void setupPersistence() {
         // TODO
+        File dogs = new File(CAPERS_FOLDER, "dogs");
+        dogs.mkdirs();
+        File story = new File(CAPERS_FOLDER, "story");
+        try {
+            story.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
@@ -41,6 +54,12 @@ public class CapersRepository {
      */
     public static void writeStory(String text) {
         // TODO
+        File file = new File(CAPERS_FOLDER, "story");
+        String previous = Utils.readContentsAsString(file);
+        String newText = previous + text + "\n";
+        Utils.writeContents(file, newText);
+        System.out.println(newText);
+
     }
 
     /**
@@ -50,6 +69,16 @@ public class CapersRepository {
      */
     public static void makeDog(String name, String breed, int age) {
         // TODO
+        Dog dog = new Dog(name, breed, age);
+
+
+
+        File dogFile = new File(Dog.DOG_FOLDER, name);
+
+        writeObject(dogFile, dog);
+
+        System.out.println(dog.toString());
+
     }
 
     /**
@@ -60,5 +89,9 @@ public class CapersRepository {
      */
     public static void celebrateBirthday(String name) {
         // TODO
+        Dog dog = Dog.fromFile(name);
+        dog.haveBirthday();
+        File dogFile = new File(Dog.DOG_FOLDER, name);
+        writeObject(dogFile, dog);
     }
 }
