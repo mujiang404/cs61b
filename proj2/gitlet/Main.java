@@ -14,29 +14,35 @@ public class Main {
     public static void main(String[] args) {
 
 
+
         // TODO: what if args is empty?
         if (args.length == 0) {
-            throw new GitletException("Please enter a command.");
+            System.out.println("Please enter a command.");
+            System.exit(0);
         }
         String firstArg = args[0];
         switch(firstArg) {
             case "init":
+
                 validateNumArgs(args, 1, 1);
                 CommandRepository.init();
                 // TODO: handle the `init` command
                 break;
             case "add":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.add(args[1]);
                 // TODO: handle the `add [filename]` command
                 break;
             // TODO: FILL THE REST IN
             case "rm":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.remove(args[1]);
                 break;
 
             case "commmit":
+                isInInitialized();
                 if (args.length < 2) {
                     throw new GitletException("Please enter a commit message.");
                 }
@@ -45,26 +51,31 @@ public class Main {
                 break;
 
             case "log":
+                isInInitialized();
                 validateNumArgs(args, 1, 1);
                 CommandRepository.log();
                 break;
 
             case "global-log":
+                isInInitialized();
                 validateNumArgs(args, 1, 1);
                 CommandRepository.globalLog();
                 break;
 
             case "find":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.findCommit(args[1]);
                 break;
 
             case "status":
+                isInInitialized();
                 validateNumArgs(args, 1, 1);
                 CommandRepository.status();
                 break;
 
             case "checkout":
+                isInInitialized();
                 validateNumArgs(args, 2, 4);
                 if (args.length == 2) {
 
@@ -78,28 +89,34 @@ public class Main {
                 break;
 
             case "branch":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.branchCommand(args[1]);
                 break;
 
             case "rm-branch":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.rmbranchCommand(args[1]);
                 break;
 
             case "reset":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.resetCommand(args[1]);
 
                 break;
 
             case "merge":
+                isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.merge(args[1]);
                 break;
 
             default:
-                throw new GitletException("No command with that name exists.");
+                isInInitialized();
+                System.out.println("No command with that name exists.");
+                System.exit(0);
 
 
         }
@@ -107,7 +124,8 @@ public class Main {
 
     public static void validateNumArgs(String[] args, int n, int m) {
         if (args.length >= n && args.length <= m) {
-            throw new GitletException("Incorrect operands.");
+            System.out.println("Incorrect operands.");
+            System.exit(0);
         }
     }
 
@@ -118,7 +136,8 @@ public class Main {
                 return;
             }
         }
-        throw new GitletException("Not in an initialized Gitlet directory.");
+        System.out.println("Not in an initialized Gitlet directory.");
+        System.exit(0);
 
     }
 

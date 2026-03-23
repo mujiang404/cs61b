@@ -21,7 +21,12 @@ public class CommandRepository {
     static File MASTER_FILE = new File(".gitlet/branches/master");
 
 
-    public static void setupPersistence() {
+    public static void init() {
+
+        if (new File(".gitlet").exists()) {
+            throw new GitletException("A Gitlet version-control system already exists in the current directory.");
+        }
+
         File GitletDir = new File(".gitlet");
         GitletDir.mkdirs();
         File head = new File(".gitlet/head");
@@ -42,20 +47,16 @@ public class CommandRepository {
         }
         File branchs = new File(".gitlet/branchs");
         branchs.mkdirs();
-        File masterFile = new File(".gitlet/branches/master");
+        File masterFile = new File(".gitlet/branchs/master");
         try {
             masterFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-    }
 
-    public static void init() {
 
-        if (new File(".gitlet").exists()) {
-            throw new GitletException("A Gitlet version-control system already exists in the current directory.");
-        }
+
 
         Utils.writeContents(HEAD_FILE, "master");
 
@@ -66,8 +67,8 @@ public class CommandRepository {
 
         Utils.writeContents(MASTER_FILE, initialCommit.makeHashCode());
 
-        Stages stages = new Stages();
-        Utils.writeObject(STAGES_FLODER, stages);
+        Stages stagesObj = new Stages();
+        Utils.writeObject(STAGES_FLODER, stagesObj);
 
 
     }
