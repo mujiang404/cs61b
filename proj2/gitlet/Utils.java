@@ -1,14 +1,6 @@
 package gitlet;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
@@ -188,6 +180,18 @@ class Utils {
         return plainFilenamesIn(new File(dir));
     }
 
+    static List<String> plainFilenamesInProject() {
+        return plainFilenamesIn(CommandRepository.PROJECT_DIR);
+    }
+
+    static List<String> plainFilenamesInCommitFloder() { return plainFilenamesIn(CommandRepository.COMMITS_FLODER);}
+
+    static List<String> plainFilenamesInBranchFloder() { return plainFilenamesIn(CommandRepository.BRANCHS_FLODER);}
+
+
+
+
+
     /* OTHER FILE UTILITIES */
 
     /** Return the concatentation of FIRST and OTHERS into a File designator,
@@ -236,4 +240,98 @@ class Utils {
         System.out.printf(msg, args);
         System.out.println();
     }
+
+    static String getProjectFileHash(String fileName) {
+        return Blob.getGivenFileHashCode(fileName);
+    }
+
+    static String getProjectFileContent(String fileName) {
+        return readContentsAsString(new File(fileName));
+    }
+
+    static String getCurrentBranch() {
+        return readContentsAsString(CommandRepository.HEAD_FILE);
+    }
+
+    static boolean isCurrentBranch(String branch) {
+        return branch.equals(getCurrentBranch());
+    }
+
+    static boolean isBranchExist(String branch) {
+        List<String> branches = plainFilenamesInBranchFloder();
+        return branches.contains(branch);
+    }
+
+    static void changeCurrentBranchContent(String commitHash) {
+        new File(CommandRepository.BRANCHS_FLODER, getCurrentBranch()).delete();
+        File newBranch = new File(CommandRepository.BRANCHS_FLODER, getCurrentBranch());
+        try {
+            newBranch.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writeContents(newBranch, commitHash);
+    }
+
+
+    static boolean isProjectIncludeFile(String fileName) {
+        for (String stageName : plainFilenamesInProject()) {
+            if (fileName.equals(stageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static File getProjectFile(String fileName) {
+        return new File(fileName);
+    }
+
+    static void overwriteFileContent(String fileName, String content) {
+        getProjectFile(fileName).delete();
+        try {
+            getProjectFile(fileName).createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writeContents(getProjectFile(fileName), content);
+    }
+
+    static void makeProjectFile(String fileName, String content) {
+        writeContents(getProjectFile(fileName), content);
+    }
+
+    static File getGivenBranch(String branch) {
+        return new File(CommandRepository.BRANCHS_FLODER, branch);
+    }
+
+    static void clearCWDFiles() {
+        List<String> files = plainFilenamesInProject();
+        for (String file : files) {
+            getProjectFile(file).delete();
+        }
+    }
+
+    static void changBranch(String branch) {
+        CommandRepository.HEAD_FILE.delete();
+        try {
+            CommandRepository.HEAD_FILE.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writeContents(CommandRepository.HEAD_FILE, branch);
+    }
+
+    static void changHeadToHash(String commitHash) {
+        CommandRepository.HEAD_FILE.delete();
+        try {
+            CommandRepository.HEAD_FILE.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writeContents(CommandRepository.HEAD_FILE, commitHash);
+
+    }
+
+
 }
