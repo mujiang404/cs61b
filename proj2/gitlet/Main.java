@@ -41,7 +41,7 @@ public class Main {
                 CommandRepository.remove(args[1]);
                 break;
 
-            case "commmit":
+            case "commit":
                 isInInitialized();
                 if (args.length < 2) {
                     throw new GitletException("Please enter a commit message.");
@@ -123,21 +123,19 @@ public class Main {
     }
 
     public static void validateNumArgs(String[] args, int n, int m) {
-        if (args.length >= n && args.length <= m) {
+        if (!(args.length >= n && args.length <= m)) {
             System.out.println("Incorrect operands.");
             System.exit(0);
         }
     }
 
     public static void isInInitialized() {
-        File file = new File(System.getProperty("user.dir"));
-        for (String s : Utils.plainFilenamesIn(file)) {
-            if (s.equals(".gitlet")) {
-                return;
-            }
+        File file = new File("./.gitlet");
+        if (!file.exists()) {
+            System.out.println("Not in an initialized Gitlet directory.");
+            System.exit(0);
         }
-        System.out.println("Not in an initialized Gitlet directory.");
-        System.exit(0);
+        
 
     }
 

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.SoftReference;
 import java.sql.SQLData;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /** Represents a gitlet commit object.
@@ -55,10 +56,8 @@ public class Commit implements Serializable {
         files = new HashMap<>();
 
         Date initialTime = new Date(0);
-        Formatter formatter = new Formatter();
-        formatter.format("%ta %tb %td %tT %tY %tz", initialTime, initialTime, initialTime, initialTime,  initialTime, initialTime);
-
-        timeStamp = formatter.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
+        this.timeStamp = sdf.format(initialTime);
 
         commitHashCode = makeHashCode();
     }
@@ -70,10 +69,10 @@ public class Commit implements Serializable {
         files = parent.getFiles();
 
         Date currentTime = new Date();
-        Formatter formatter = new Formatter();
-        formatter.format("%ta %tb %td %tT %tY %tz", currentTime, currentTime, currentTime, currentTime, currentTime, currentTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
+        this.timeStamp = sdf.format(currentTime);
 
-        timeStamp = formatter.toString();
+
 
         commitHashCode = null;
 
@@ -197,7 +196,7 @@ public class Commit implements Serializable {
             System.out.println("Merge: " + parent.substring(0, 8) + " " +  secondParent.substring(0, 8));
         }
         System.out.println("Date: " +  timeStamp);
-        System.out.println(message);
+        System.out.println(message + "\n");
     }
 
     public String getParent() {

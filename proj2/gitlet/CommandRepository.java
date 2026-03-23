@@ -45,9 +45,9 @@ public class CommandRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        File branchs = new File(".gitlet/branchs");
+        File branchs = new File(".gitlet/branches");
         branchs.mkdirs();
-        File masterFile = new File(".gitlet/branchs/master");
+        File masterFile = new File(".gitlet/branches/master");
         try {
             masterFile.createNewFile();
         } catch (IOException e) {
@@ -65,7 +65,7 @@ public class CommandRepository {
         initialCommit.makeCommitFile();
 
 
-        Utils.writeContents(MASTER_FILE, initialCommit.makeHashCode());
+        Utils.writeContents(MASTER_FILE, initialCommit.getCommitHashCode());
 
         Stages stagesObj = new Stages();
         Utils.writeObject(STAGES_FLODER, stagesObj);
@@ -319,6 +319,7 @@ public class CommandRepository {
     public static void checkoutCurrentCommitFile(String fileName) {
         Commit commit = Commit.getCurrentCommit();
         if (!(commit.isExistFile(fileName))) {
+
             throw new GitletException("File does not exist in that commit.");
         }
 

@@ -72,7 +72,7 @@ public class Stages implements Serializable {
     public void addStageOfAddition(String fileName) {
         String currentFileHash = Utils.getProjectFileHash(fileName);
         int currentFileMode = 1;
-        Stage stage = new Stage(currentFileMode, currentFileHash, fileName);
+        Stage stage = new Stage(currentFileMode, fileName, currentFileHash);
         this.stages.put(fileName, stage);
 
         Blob.putProjectFileToBlobFloder(fileName);
@@ -85,7 +85,7 @@ public class Stages implements Serializable {
     public void addStageOfRemoval(String fileName) {
         String currentFileHash = Utils.getProjectFileHash(fileName);
         int currentFileMode = 0;
-        Stage stage = new Stage(currentFileMode, currentFileHash, fileName);
+        Stage stage = new Stage(currentFileMode, fileName, currentFileHash);
         this.stages.put(fileName, stage);
     }
 
