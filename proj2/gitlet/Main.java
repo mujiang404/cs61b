@@ -22,7 +22,7 @@ public class Main {
         }
         String firstArg = args[0];
         switch(firstArg) {
-            case "initi":
+            case "init":
 
                 validateNumArgs(args, 1, 1);
                 CommandRepository.init();
