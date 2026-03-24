@@ -83,10 +83,13 @@ public class Stages implements Serializable {
     }
 
     public void addStageOfRemoval(String fileName) {
-        String currentFileHash = Utils.getProjectFileHash(fileName);
+        String currentFileHash = null;
         int currentFileMode = 0;
         Stage stage = new Stage(currentFileMode, fileName, currentFileHash);
         this.stages.put(fileName, stage);
+
+        File fileBeDeleted = new File(fileName);
+        fileBeDeleted.delete();
     }
 
     public Map<String, Stage> getStages() {

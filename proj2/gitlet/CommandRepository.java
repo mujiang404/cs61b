@@ -132,6 +132,7 @@ public class CommandRepository {
         } else {
             if  (!isStagesIncludeFile) {
                 currentStages.addStageOfRemoval(fileName);
+
             }
         }
 
@@ -211,6 +212,7 @@ public class CommandRepository {
             }
             System.out.println(branchName);
         }
+        System.out.println();
 
         System.out.println("=== Staged Files ===");
         Stages stages = Stages.getCurrentStages();
@@ -229,12 +231,14 @@ public class CommandRepository {
         for (String fileName : additionFileNames) {
             System.out.println(fileName);
         }
+        System.out.println();
 
 
         System.out.println("=== Removed Files ===");
         for (String fileName : removalFileNames) {
             stages.removeStage(fileName);
         }
+        System.out.println();
 
 
 
@@ -306,13 +310,15 @@ public class CommandRepository {
                 System.out.println(deleteAndModifyFileName + " (modified)");
             }
         }
+        System.out.println();
 
 
         System.out.println("=== Untracked Files ===");
         for (String untrackedFileName : untrackedFileNames) {
             System.out.println(untrackedFileName);
         }
-        
+        System.out.println();
+
 
     }
 

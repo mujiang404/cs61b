@@ -43,7 +43,7 @@ public class Main {
 
             case "commit":
                 isInInitialized();
-                if (args.length < 2) {
+                if (args.length < 2 || args[1].trim().equals("")) {
                     System.out.println("Please enter a commit message.");
                     System.exit(0);
                 }
