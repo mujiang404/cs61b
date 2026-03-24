@@ -24,7 +24,8 @@ public class CommandRepository {
     public static void init() {
 
         if (new File(".gitlet").exists()) {
-            throw new GitletException("A Gitlet version-control system already exists in the current directory.");
+            System.out.println("A Gitlet version-control system already exists in the current directory.");
+            System.exit(0);
         }
 
         File GitletDir = new File(".gitlet");
@@ -329,7 +330,7 @@ public class CommandRepository {
             if (!commit.isCommitFileProjectFileSame(fileName)) {
                 Utils.overwriteFileContent(fileName, commitFileContent);
             }
-            
+
         } else {
             Utils.makeProjectFile(fileName, commitFileContent);
         }

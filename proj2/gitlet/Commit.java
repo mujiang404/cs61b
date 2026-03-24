@@ -53,7 +53,7 @@ public class Commit implements Serializable {
         message = "initial commit";
         parent = null;
         secondParent = null;
-        files = new HashMap<>();
+        files = new TreeMap<>();
 
         Date initialTime = new Date(0);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);

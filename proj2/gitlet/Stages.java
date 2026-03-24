@@ -2,8 +2,8 @@ package gitlet;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Stages implements Serializable {
     private Map<String, Stage> stages;
@@ -11,7 +11,7 @@ public class Stages implements Serializable {
     static File STAGES_FLODER = new File(".gitlet/stages");
 
     public Stages() {
-        this.stages = new HashMap<>();
+        this.stages = new TreeMap<>();
     }
 
     public boolean isExistFile(String fileName) {
