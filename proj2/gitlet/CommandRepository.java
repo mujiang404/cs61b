@@ -207,7 +207,7 @@ public class CommandRepository {
         List<String> branchNames = Utils.plainFilenamesInBranchFloder();
         for (String branchName : branchNames) {
             if (Utils.isCurrentBranch(branchName)) {
-                System.out.println(branchName + "*");
+                System.out.println("*" + branchName);
                 continue;
             }
             System.out.println(branchName);
@@ -558,7 +558,7 @@ public class CommandRepository {
             System.exit(0);
         }
 
-        File branchFile = new File(COMMITS_FLODER, branchName);
+        File branchFile = new File(BRANCHS_FLODER, branchName);
         try {
             branchFile.createNewFile();
         } catch (IOException e) {
