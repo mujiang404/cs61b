@@ -329,6 +329,7 @@ public class CommandRepository {
             if (!commit.isCommitFileProjectFileSame(fileName)) {
                 Utils.overwriteFileContent(fileName, commitFileContent);
             }
+            
         } else {
             Utils.makeProjectFile(fileName, commitFileContent);
         }

@@ -275,10 +275,9 @@ class Utils {
 
 
     static boolean isProjectIncludeFile(String fileName) {
-        for (String stageName : plainFilenamesInProject()) {
-            if (fileName.equals(stageName)) {
-                return true;
-            }
+        File file = new File(fileName);
+        if (file.exists()) {
+            return true;
         }
         return false;
     }
