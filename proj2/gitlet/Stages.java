@@ -32,7 +32,7 @@ public class Stages implements Serializable {
     }
 
     public boolean isTheSameFile(String fileName) {
-        if (getFileHash(fileName) == Utils.getProjectFileHash(fileName)) {
+        if (getFileHash(fileName).equals(Utils.getProjectFileHash(fileName))) {
             return true;
         }
         return false;
