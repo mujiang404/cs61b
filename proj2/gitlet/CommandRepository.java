@@ -84,14 +84,24 @@ public class CommandRepository {
 
         Stages currentStages = Stages.getCurrentStages();
 
-        boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
-
         boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
+
+        boolean isFileContentEqulsCommitFile = true;
+
+        if (isCommitIncludeFile) {
+            isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+        }
+
 
         boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
 
-        boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+        boolean isFileContentEqulsStagesFile = true;
 
+        if (isStagesIncludeFile) {
+
+            isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
+
+        }
         int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
         if (isCommitIncludeFile && isFileContentEqulsCommitFile) {
@@ -276,13 +286,24 @@ public class CommandRepository {
         for (String fileName : projectFileNameList) {
 
 
-            boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
-
             boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
+
+            boolean isFileContentEqulsCommitFile = true;
+
+            if (isCommitIncludeFile) {
+                isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+            }
+
 
             boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
 
-            boolean isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
+            boolean isFileContentEqulsStagesFile = true;
+
+            if (isStagesIncludeFile) {
+
+                isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
+
+            }
 
             int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
