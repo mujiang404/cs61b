@@ -243,7 +243,7 @@ public class CommandRepository {
 
         Stages currentStages = Stages.getCurrentStages();
 
-        List<String> projectFileNameList = Utils.plainFilenamesInProject();
+        List<String> projectFileNameList = Utils.plainFilenamesIn(Repository.CWD);
 
 
         List<String> deleteAndModifyFileNames = new ArrayList<>();
