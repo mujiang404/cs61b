@@ -246,7 +246,7 @@ public class CommandRepository {
 
         System.out.println("=== Removed Files ===");
         for (String fileName : removalFileNames) {
-            stages.removeStage(fileName);
+            System.out.println(fileName);
         }
         System.out.println();
 
@@ -309,7 +309,7 @@ public class CommandRepository {
 
             if (isStagesIncludeFile && (!isFileContentEqulsStagesFile)) {
                 deleteAndModifyFileNames.add(fileName);
-            } else if (!(isStagesIncludeFile) && isCommitIncludeFile && (!isFileContentEqulsCommitFile)) {
+            } else if ((!isStagesIncludeFile) && isCommitIncludeFile && (!isFileContentEqulsCommitFile)) {
                 deleteAndModifyFileNames.add(fileName);
             } else if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
                 untrackedFileNames.add(fileName);
