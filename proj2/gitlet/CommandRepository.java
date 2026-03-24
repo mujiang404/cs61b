@@ -211,7 +211,6 @@ public class CommandRepository {
             }
             System.out.println(branchName);
         }
-        System.out.println("\n");
 
         System.out.println("=== Staged Files ===");
         Stages stages = Stages.getCurrentStages();
@@ -230,13 +229,13 @@ public class CommandRepository {
         for (String fileName : additionFileNames) {
             System.out.println(fileName);
         }
-        System.out.println("\n");
+
 
         System.out.println("=== Removed Files ===");
         for (String fileName : removalFileNames) {
             stages.removeStage(fileName);
         }
-        System.out.println("\n");
+
 
 
         Commit currentCommit = Commit.getCurrentCommit();
@@ -307,13 +306,13 @@ public class CommandRepository {
                 System.out.println(deleteAndModifyFileName + " (modified)");
             }
         }
-        System.out.println("\n");
+
 
         System.out.println("=== Untracked Files ===");
         for (String untrackedFileName : untrackedFileNames) {
             System.out.println(untrackedFileName);
         }
-        System.out.println("\n");
+        
 
     }
 
@@ -391,7 +390,7 @@ public class CommandRepository {
 
         Stages currentStages = Stages.getCurrentStages();
 
-        List<String> projectFileNameList = Utils.plainFilenamesInProject();
+        List<String> projectFileNameList = Utils.plainFilenamesIn(Repository.CWD);
 
         List<String> untrackedFileNames = new ArrayList<>();
 
@@ -587,7 +586,7 @@ public class CommandRepository {
 
         Stages currentStages = Stages.getCurrentStages();
 
-        List<String> projectFileNameList = Utils.plainFilenamesInProject();
+        List<String> projectFileNameList = Utils.plainFilenamesIn(Repository.CWD);
 
         List<String> untrackedFileNames = new ArrayList<>();
 
@@ -770,7 +769,7 @@ public class CommandRepository {
 
         Commit currentCommit = Commit.getCurrentCommit();
 
-        List<String> projectFileNameList = Utils.plainFilenamesInProject();
+        List<String> projectFileNameList = Utils.plainFilenamesIn(Repository.CWD);
 
         List<String> untrackedFileNames = new ArrayList<>();
 

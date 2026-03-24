@@ -305,7 +305,7 @@ class Utils {
     }
 
     static void clearCWDFiles() {
-        List<String> files = plainFilenamesInProject();
+        List<String> files = plainFilenamesIn(Repository.CWD);
         for (String file : files) {
             getProjectFile(file).delete();
         }
