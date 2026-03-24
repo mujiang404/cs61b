@@ -76,7 +76,8 @@ public class CommandRepository {
 
     public static void add(String fileName) {
         if (!(new File(fileName).exists())) {
-            throw new GitletException("File does not exist.");
+            System.out.println("File does not exist.");
+            System.exit(0);
         }
 
         Commit currentCommit = Commit.getCurrentCommit();
@@ -124,7 +125,8 @@ public class CommandRepository {
         int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
         if (!(isCommitIncludeFile || isStagesIncludeFile)) {
-            throw new GitletException("No reason to remove the file.");
+            System.out.println("No reason to remove the file.");
+            System.exit(0);
         } else if (isStagesIncludeFile && (getTheStagesFileMode == 1)) {
             currentStages.removeStage(fileName);
         } else {
@@ -146,7 +148,8 @@ public class CommandRepository {
         Map<String, Stage> stages = stagesObject.getStages();
 
         if (stages.isEmpty()) {
-            throw new GitletException("No changes added to the commit.");
+            System.out.println("No changes added to the commit.");
+            System.exit(0);
         }
 
         for (Map.Entry<String, Stage> entry : stages.entrySet()) {
@@ -193,7 +196,8 @@ public class CommandRepository {
         }
         if (numberOfCommit == 0) {
 
-            throw new GitletException("Found no commit with that message.");
+            System.out.println("Found no commit with that message.");
+            System.exit(0);
         }
     }
 
@@ -321,7 +325,8 @@ public class CommandRepository {
         Commit commit = Commit.getCurrentCommit();
         if (!(commit.isExistFile(fileName))) {
 
-            throw new GitletException("File does not exist in that commit.");
+            System.out.println("File does not exist in that commit.");
+            System.exit(0);
         }
 
         String commitFileContent = Blob.getGivenFileCotent(commit.getFileHash(fileName));
@@ -349,11 +354,13 @@ public class CommandRepository {
         }
 
         if (commit == null) {
-            throw new GitletException("No commit with that id exists.");
+            System.out.println("No commit with that id exists.");
+            System.exit(0);
         }
 
         if (!(commit.isExistFile(fileName))) {
-            throw new GitletException("File does not exist in that commit.");
+            System.out.println("File does not exist in that commit.");
+            System.exit(0);
         }
 
         String commitFileContent = Blob.getGivenFileCotent(commit.getFileHash(fileName));
@@ -371,11 +378,13 @@ public class CommandRepository {
 
     public static void checkoutBranch(String branchName) {
         if (Utils.isCurrentBranch(branchName)) {
-            throw new GitletException("No need to checkout the current branch.");
+            System.out.println("No need to checkout the current branch.");
+            System.exit(0);
         }
 
         if (!Utils.isBranchExist(branchName)) {
-            throw new GitletException("No such branch exists.");
+            System.out.println("No such branch exists.");
+            System.exit(0);
         }
 
         Commit currentCommit = Commit.getCurrentCommit();
@@ -410,9 +419,11 @@ public class CommandRepository {
 
         for (String untrackedFileName : untrackedFileNames) {
             if ((commitBeCheckedout.isExistFile(untrackedFileName)) && currentCommit.isCommitFileProjectFileSame(untrackedFileName)) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
             } else if (!commitBeCheckedout.isExistFile(untrackedFileName)) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
             }
         }
 
@@ -538,7 +549,8 @@ public class CommandRepository {
 
     public static void branchCommand(String branchName) {
         if (Utils.isBranchExist(branchName)) {
-            throw new GitletException("A branch with that name already exists.");
+            System.out.println("A branch with that name already exists.");
+            System.exit(0);
         }
 
         File branchFile = new File(COMMITS_FLODER, branchName);
@@ -554,10 +566,12 @@ public class CommandRepository {
 
     public static void rmbranchCommand(String branchName) {
         if (!Utils.isBranchExist(branchName)) {
-            throw new GitletException("A branch with that name does not exist.");
+            System.out.println("A branch with that name does not exist.");
+            System.exit(0);
         }
         if (Utils.isCurrentBranch(branchName)) {
-            throw new GitletException("A branch with that name already exists.");
+            System.out.println("A branch with that name already exists.");
+            System.exit(0);
         }
 
         Utils.getGivenBranch(branchName).delete();
@@ -565,7 +579,8 @@ public class CommandRepository {
 
     public static void resetCommand(String commitHash) {
         if (!Commit.isCommitExit(commitHash)) {
-            throw new GitletException("No commit with that id exists.");
+            System.out.println("No commit with that id exists.");
+            System.exit(0);
         }
 
         Commit currentCommit = Commit.getCurrentCommit();
@@ -604,9 +619,11 @@ public class CommandRepository {
 
         for (String untrackedFileName : untrackedFileNames) {
             if ((commitBeCheckedout.isExistFile(untrackedFileName)) && currentCommit.isCommitFileProjectFileSame(untrackedFileName)) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
             } else if (!commitBeCheckedout.isExistFile(untrackedFileName)) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
             }
         }
 
@@ -737,15 +754,18 @@ public class CommandRepository {
     public static void merge(String branchName) {
         Stages currentStages = Stages.getCurrentStages();
         if (currentStages.isStagesEmpty()) {
-            throw new GitletException("You have uncommitted changes.");
+            System.out.println("You have uncommitted changes.");
+            System.exit(0);
         }
 
         if (Utils.isCurrentBranch(branchName)) {
-            throw new GitletException("Cannot merge a branch with itself.");
+            System.out.println("Cannot merge a branch with itself.");
+            System.exit(0);
         }
 
         if (Utils.isBranchExist(branchName)) {
-            throw new GitletException("A branch with that name does not exist.");
+            System.out.println("A branch with that name does not exist.");
+            System.exit(0);
         }
 
         Commit currentCommit = Commit.getCurrentCommit();
@@ -778,9 +798,11 @@ public class CommandRepository {
 
         for (String untrackedFileName : untrackedFileNames) {
             if ((commitBeCheckedout.isExistFile(untrackedFileName)) && currentCommit.isCommitFileProjectFileSame(untrackedFileName)) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
             } else if (!commitBeCheckedout.isExistFile(untrackedFileName)) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
             }
         }
 

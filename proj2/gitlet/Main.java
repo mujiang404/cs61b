@@ -44,7 +44,8 @@ public class Main {
             case "commit":
                 isInInitialized();
                 if (args.length < 2) {
-                    throw new GitletException("Please enter a commit message.");
+                    System.out.println("Please enter a commit message.");
+                    System.exit(0);
                 }
                 validateNumArgs(args, 2, 2);
                 CommandRepository.commitCommand(args[1]);
