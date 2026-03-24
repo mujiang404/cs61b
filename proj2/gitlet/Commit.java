@@ -153,7 +153,7 @@ public class Commit implements Serializable {
     }
 
     public boolean isCommitFileProjectFileSame(String fileName) {
-        if (getFileHash(fileName) == Utils.getProjectFileHash(fileName)) {
+        if (getFileHash(fileName).equals(Utils.getProjectFileHash(fileName))) {
             return true;
         }
         return false;
