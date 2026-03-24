@@ -282,7 +282,7 @@ public class CommandRepository {
 
             boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
 
-            boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+            boolean isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
 
             int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
