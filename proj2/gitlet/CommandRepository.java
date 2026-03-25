@@ -107,7 +107,7 @@ public class CommandRepository {
 
 
 
-        if (isCommitIncludeFile && isFileContentEqulsCommitFile) {
+        if (isStagesIncludeFile && isCommitIncludeFile && isFileContentEqulsCommitFile) {
             currentStages.removeStage(fileName);
         } else if (isStagesIncludeFile && (getTheStagesFileMode == 0)) {
             currentStages.removeStage(fileName);
