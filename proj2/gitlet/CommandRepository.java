@@ -97,12 +97,15 @@ public class CommandRepository {
 
         boolean isFileContentEqulsStagesFile = true;
 
-        if (isStagesIncludeFile) {
+        int getTheStagesFileMode = currentStages.modeOfStage(fileName);
+
+        if (isStagesIncludeFile && (getTheStagesFileMode == 1)) {
 
             isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
 
         }
-        int getTheStagesFileMode = currentStages.modeOfStage(fileName);
+
+
 
         if (isCommitIncludeFile && isFileContentEqulsCommitFile) {
             currentStages.removeStage(fileName);
@@ -113,6 +116,8 @@ public class CommandRepository {
                 currentStages.removeStage(fileName);
                 currentStages.addStageOfAddition(fileName);
             }
+        } else if ((!isStagesIncludeFile) && (isCommitIncludeFile) && (isFileContentEqulsStagesFile)) {
+            return;
         } else {
             currentStages.addStageOfAddition(fileName);
         }
@@ -328,13 +333,15 @@ public class CommandRepository {
 
             boolean isFileContentEqulsStagesFile = true;
 
-            if (isStagesIncludeFile) {
+            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
+
+            if (isStagesIncludeFile && (getTheStagesFileMode == 1)) {
 
                 isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
 
             }
 
-            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
+
 
             if (isStagesIncludeFile && (!isFileContentEqulsStagesFile)) {
                 deleteAndModifyFileNames.add(fileName);
