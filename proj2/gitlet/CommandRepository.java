@@ -266,14 +266,66 @@ public class CommandRepository {
 
         for (String stageFileName : currentStages.getStages().keySet()) {
             boolean isProjIncludeFile = Utils.isProjectIncludeFile(stageFileName);
-            if (!isProjIncludeFile) {
-                deleteFileNames.add(stageFileName);
+
+
+            boolean isCommitIncludeFile = (currentCommit.isExistFile(stageFileName));
+
+            boolean isFileContentEqulsCommitFile = true;
+
+            if (isCommitIncludeFile) {
+                isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(stageFileName));
+            }
+
+
+            boolean isStagesIncludeFile = (currentStages.isExistFile(stageFileName));
+
+            boolean isFileContentEqulsStagesFile = true;
+
+            if (isStagesIncludeFile) {
+
+                isFileContentEqulsStagesFile = (currentStages.isTheSameFile(stageFileName));
 
             }
+
+            int getTheStagesFileMode = currentStages.modeOfStage(stageFileName);
+
+
+
+            if ((!isProjIncludeFile) && (getTheStagesFileMode == 1)) {
+                deleteFileNames.add(stageFileName);
+            }
         }
+
         for (String commitFilename : currentCommit.getFiles().keySet()) {
             boolean isProjectIncludeFile = Utils.isProjectIncludeFile(commitFilename);
-            if (!isProjectIncludeFile) {
+
+
+            boolean isCommitIncludeFile = (currentCommit.isExistFile(commitFilename));
+
+            boolean isFileContentEqulsCommitFile = true;
+
+            if (isCommitIncludeFile) {
+                isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(commitFilename));
+            }
+
+
+            boolean isStagesIncludeFile = (currentStages.isExistFile(commitFilename));
+
+            boolean isFileContentEqulsStagesFile = true;
+
+            if (isStagesIncludeFile) {
+
+                isFileContentEqulsStagesFile = (currentStages.isTheSameFile(commitFilename));
+
+            }
+
+            int getTheStagesFileMode = currentStages.modeOfStage(commitFilename);
+
+
+
+            if ((!isProjectIncludeFile) && (!isStagesIncludeFile)) {
+                deleteFileNames.add(commitFilename);
+            } else if ((!isProjectIncludeFile) && (isStagesIncludeFile) && (getTheStagesFileMode == 1)) {
                 deleteFileNames.add(commitFilename);
             }
         }
