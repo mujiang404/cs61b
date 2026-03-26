@@ -82,8 +82,16 @@ public class Main {
 
                     CommandRepository.checkoutBranch(args[1]);
                 } else if (args.length == 3) {
+                    if (!args[1].equals("--")) {
+                        System.out.println("Not in an initialized Gitlet directory.");
+                        System.exit(0);
+                    }
                     CommandRepository.checkoutCurrentCommitFile(args[2]);
                 } else if (args.length == 4) {
+                    if (!args[2].equals("--")) {
+                        System.out.println("Not in an initialized Gitlet directory.");
+                        System.exit(0);
+                    }
                     CommandRepository.checkoutGivenCommitFile(args[1], args[3]);
                 }
 
