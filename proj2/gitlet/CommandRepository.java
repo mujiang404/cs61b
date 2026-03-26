@@ -463,7 +463,24 @@ public class CommandRepository {
 
             boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
 
+            boolean isFileContentEqulsCommitFile = true;
+
+            if (isCommitIncludeFile) {
+                isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+            }
+
+
             boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
+
+            boolean isFileContentEqulsStagesFile = true;
+
+            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
+
+            if (isStagesIncludeFile && (getTheStagesFileMode == 1)) {
+
+                isFileContentEqulsStagesFile = (currentStages.isTheSameFile(fileName));
+
+            }
 
 
 
@@ -477,7 +494,7 @@ public class CommandRepository {
         Commit commitBeCheckedout = Commit.getGivenBranchCommit(branchName);
 
         for (String untrackedFileName : untrackedFileNames) {
-            if ((commitBeCheckedout.isExistFile(untrackedFileName)) && currentCommit.isCommitFileProjectFileSame(untrackedFileName)) {
+            if ((commitBeCheckedout.isExistFile(untrackedFileName)) && !(Utils.getProjectFileHash(untrackedFileName).equals(commitBeCheckedout.getFileHash(untrackedFileName)))) {
                 System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!commitBeCheckedout.isExistFile(untrackedFileName)) {
@@ -677,7 +694,7 @@ public class CommandRepository {
         }
 
         for (String untrackedFileName : untrackedFileNames) {
-            if ((commitBeCheckedout.isExistFile(untrackedFileName)) && currentCommit.isCommitFileProjectFileSame(untrackedFileName)) {
+            if ((commitBeCheckedout.isExistFile(untrackedFileName)) && !(Utils.getProjectFileHash(untrackedFileName).equals(commitBeCheckedout.getFileHash(untrackedFileName)))) {
                 System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!commitBeCheckedout.isExistFile(untrackedFileName)) {
@@ -856,7 +873,7 @@ public class CommandRepository {
         Commit commitBeCheckedout = Commit.getGivenBranchCommit(branchName);
 
         for (String untrackedFileName : untrackedFileNames) {
-            if ((commitBeCheckedout.isExistFile(untrackedFileName)) && currentCommit.isCommitFileProjectFileSame(untrackedFileName)) {
+            if ((commitBeCheckedout.isExistFile(untrackedFileName)) && !(Utils.getProjectFileHash(untrackedFileName).equals(commitBeCheckedout.getFileHash(untrackedFileName)))) {
                 System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!commitBeCheckedout.isExistFile(untrackedFileName)) {
