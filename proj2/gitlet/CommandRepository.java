@@ -460,15 +460,12 @@ public class CommandRepository {
         for (String fileName : projectFileNameList) {
 
 
-            boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
 
             boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
 
             boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
 
-            boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
 
-            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
             if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
                 untrackedFileNames.add(fileName);
@@ -632,7 +629,7 @@ public class CommandRepository {
             System.exit(0);
         }
         if (Utils.isCurrentBranch(branchName)) {
-            System.out.println("A branch with that name already exists.");
+            System.out.println("Cannot remove the current branch.");
             System.exit(0);
         }
 
@@ -815,8 +812,8 @@ public class CommandRepository {
 
     public static void merge(String branchName) {
         Stages currentStages = Stages.getCurrentStages();
-        if (currentStages.isStagesEmpty()) {
-            System.out.println("You have uncommitted changes.");
+        if (!currentStages.isStagesEmpty()) {
+            System.out.println("You have uncommited changes.");
             System.exit(0);
         }
 
@@ -825,7 +822,7 @@ public class CommandRepository {
             System.exit(0);
         }
 
-        if (Utils.isBranchExist(branchName)) {
+        if (!Utils.isBranchExist(branchName)) {
             System.out.println("A branch with that name does not exist.");
             System.exit(0);
         }
