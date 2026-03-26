@@ -116,7 +116,7 @@ public class CommandRepository {
                 currentStages.removeStage(fileName);
                 currentStages.addStageOfAddition(fileName);
             }
-        } else if ((!isStagesIncludeFile) && (isCommitIncludeFile) && (isFileContentEqulsStagesFile)) {
+        } else if ((!isStagesIncludeFile) && (isCommitIncludeFile) && (isFileContentEqulsCommitFile)) {
             ;
         } else {
             currentStages.addStageOfAddition(fileName);
