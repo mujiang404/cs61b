@@ -254,8 +254,14 @@ public class Commit implements Serializable, Dumpable {
         String currentCommitParent = currentCommit.getCommitHashCode();
 
         while (true) {
+            if (givenCommitParent == null) {
+                break;
+            }
 
             while (true) {
+                if (currentCommitParent == null) {
+                    break;
+                }
                 if (givenCommitParent.equals(currentCommitParent)) {
                     break;
                 }
