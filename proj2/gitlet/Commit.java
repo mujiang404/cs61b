@@ -251,30 +251,27 @@ public class Commit implements Serializable, Dumpable {
         Commit currentCommit = getGivenBranchCommit(currentBranch);
 
         String givenCommitParent = givenCommit.getCommitHashCode();
-        String currentCommitParent = currentCommit.getCommitHashCode();
+
 
         while (true) {
-            if (givenCommitParent == null) {
-                break;
-            }
+
+            String currentCommitParent = currentCommit.getCommitHashCode();
 
             while (true) {
                 if (currentCommitParent == null) {
                     break;
                 }
                 if (givenCommitParent.equals(currentCommitParent)) {
-                    break;
+                    return givenCommitParent;
                 }
                 currentCommitParent = getGivenHashCommitObj(currentCommitParent).parent;
 
             }
-            if  (givenCommitParent.equals(currentCommitParent)) {
-                break;
-            }
+
             givenCommitParent = getGivenHashCommitObj(givenCommitParent).parent;
         }
 
-        return givenCommitParent;
+
     }
 
     public static List<String> findDeleteFileBetween(String currentCommitHash, String givenCommitHash) {

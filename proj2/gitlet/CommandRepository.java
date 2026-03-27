@@ -915,6 +915,7 @@ public class CommandRepository {
 
         String givenCommitHash = givenCommit.getCommitHashCode();
 
+
         if (splitPointName.equals(Commit.getGivenBranchCommit(branchName).getCommitHashCode())) {
             checkoutBranch(currentBranch);
         } else if (splitPointName.equals(Commit.getGivenBranchCommit(currentBranch).getCommitHashCode())) {
