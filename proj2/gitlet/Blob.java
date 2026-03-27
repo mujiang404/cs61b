@@ -62,7 +62,16 @@ public class Blob {
 
     public static void putFileToBlobfromHash(String givenFileName, String givenFileContent) {
         Blob blob = new Blob(givenFileName, givenFileContent);
+        if (Blob.isBlobFloderIncludeFile(blob.fileHashCode)) {
+            return;
+        }
+
         blob.makeFileFile();
+    }
+
+    public static boolean isBlobFloderIncludeFile(String givenFileHash) {
+        File file = new File(BLOBS_FLODER, givenFileHash);
+        return file.exists();
     }
 
 

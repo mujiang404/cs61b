@@ -107,6 +107,7 @@ public class Stages implements Serializable {
     }
 
     public static void stagedForAdditionFromContent(String fileName, String content) {
+
         Blob.putFileToBlobfromHash(fileName, content);
 
         Stage newStage = new Stage(1, fileName, Utils.sha1(content));
@@ -118,11 +119,13 @@ public class Stages implements Serializable {
 
     }
 
-    public static void stagedForRemovalFromContent(String fileName, String content) {
-        Stage newStage = new Stage(0, fileName, Utils.sha1(content));
+    public static void stagedForRemovalFromContent(String fileName) {
+        Stage newStage = new Stage(0, fileName, null);
         Stages currentStages = getCurrentStages();
         currentStages.getStages().put(fileName, newStage);
         currentStages.storeCurrentStage();
+
+        Utils.getProjectFile(fileName).delete();
     }
 
 

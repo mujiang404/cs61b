@@ -171,6 +171,7 @@ public class CommandRepository {
         for (Map.Entry<String, Stage> entry : stages.entrySet()) {
             commit.processStage(entry.getValue());
 
+
         }
         stagesObject.clearStages();
         stagesObject.storeCurrentStage();
@@ -679,15 +680,12 @@ public class CommandRepository {
         for (String fileName : projectFileNameList) {
 
 
-            boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
 
             boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
 
             boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
 
-            boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
 
-            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
             if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
                 untrackedFileNames.add(fileName);
@@ -871,15 +869,12 @@ public class CommandRepository {
         for (String fileName : projectFileNameList) {
 
 
-            boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
 
             boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
 
             boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
 
-            boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
 
-            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
 
             if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
                 untrackedFileNames.add(fileName);
@@ -931,22 +926,56 @@ public class CommandRepository {
             for (String fileNameBeExam :  allFiles) {
                 if (Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName) && (Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName))) {
                     String unionContent = "<<<<<<< HEAD\n" + "=======\n" + givenCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + ">>>>>>>";
+                    Utils.makeProjectFile(fileNameBeExam, unionContent);
+
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                     isConflict =  true;
 
                 } else if (Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName) && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName) && !(currentCommit.getFileHash(fileNameBeExam).equals(givenCommit.getFileHash(fileNameBeExam)))) {
                     String unionContent = "<<<<<<< HEAD\n" + currentCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + "=======\n" + givenCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + ">>>>>>>";
+                    Utils.overwriteFileContent(fileNameBeExam, unionContent);
+
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                     isConflict =  true;
 
                 } else if (Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName) && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
                     String unionContent = "<<<<<<< HEAD\n" + currentCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + "=======\n" + ">>>>>>>";
+                    Utils.overwriteFileContent(fileNameBeExam, unionContent);
+
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                     isConflict =  true;
 
-                } else if (!(Commit.isFileAdded(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!(Commit.isFileAdded(fileNameBeExam, currentCommitHash, splitPointName))) && Commit.isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
+
                     String unionContent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
+                    Utils.makeProjectFile(fileNameBeExam, unionContent);
+
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
+
+                } else if (Commit.isFileAdded(fileNameBeExam, currentCommitHash, splitPointName) && Commit.isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
+                    boolean isTwoCommitHaveSameFile = currentCommit.getFileHash(fileNameBeExam).equals(givenCommit.getFileHash(fileNameBeExam));
+                    if (!isTwoCommitHaveSameFile) {
+                        String currentCommitCotent = currentCommit.getCommitFileCotentFromName(fileNameBeExam);
+                        String givenCommitCotent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
+                        String unionContent = "<<<<<<< HEAD\n" + currentCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + "=======\n" + givenCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + ">>>>>>>";
+                        Utils.overwriteFileContent(fileNameBeExam, unionContent);
+
+
+                        Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
+                        isConflict =  true;
+
+                    }
+
+                } else if ((!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
+
+                    Utils.deleteProjectFile(fileNameBeExam);
+                    Stages.stagedForRemovalFromContent(fileNameBeExam);
+
+                } else if ((!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName)) {
+                    String givenCommitCotent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
+                    Utils.overwriteFileContent(fileNameBeExam, givenCommitCotent);
+
+                    Stages.stagedForAdditionFromContent(fileNameBeExam, givenCommitCotent);
 
                 }
             }

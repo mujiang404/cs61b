@@ -332,5 +332,11 @@ class Utils {
 
     }
 
+    static void deleteProjectFile(String fileName) {
+        getProjectFile(fileName).delete();
+    }
+
+
+
 
 }

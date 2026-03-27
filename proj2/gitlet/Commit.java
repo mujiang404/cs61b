@@ -17,7 +17,7 @@ import java.util.*;
  *
  *  @author TODO
  */
-public class Commit implements Serializable {
+public class Commit implements Serializable, Dumpable {
     /**
      * TODO: add instance variables here.
      *
@@ -25,6 +25,11 @@ public class Commit implements Serializable {
      * comment above them describing what that variable represents and how that
      * variable is used. We've provided one example for `message`.
      */
+
+    @Override
+    public void dump() {
+        System.out.println(this.toString());
+    }
 
     static File COMMITS_FLODER = new File(".gitlet/commits");
 
@@ -315,7 +320,7 @@ public class Commit implements Serializable {
 
         for (Map.Entry<String, String> entry : currentCommit.getFiles().entrySet()) {
 
-            if (givenCommit.isExistFile(entry.getKey()) && entry.getValue().equals(givenCommit.getFiles().get(entry.getKey()))) {
+            if (givenCommit.isExistFile(entry.getKey()) && !(entry.getValue().equals(givenCommit.getFiles().get(entry.getKey())))) {
                 modifyFiles.add(entry.getKey());
             }
         }
