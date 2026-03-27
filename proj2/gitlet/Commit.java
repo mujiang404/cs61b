@@ -250,8 +250,8 @@ public class Commit implements Serializable, Dumpable {
         Commit givenCommit = getGivenBranchCommit(givenBranch);
         Commit currentCommit = getGivenBranchCommit(currentBranch);
 
-        String givenCommitParent = givenCommit.parent;
-        String currentCommitParent = currentCommit.parent;
+        String givenCommitParent = givenCommit.getCommitHashCode();
+        String currentCommitParent = currentCommit.getCommitHashCode();
 
         while (true) {
 
