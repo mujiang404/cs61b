@@ -731,7 +731,7 @@ public class CommandRepository {
             Utils.makeProjectFile(entry.getKey(),  Blob.getGivenFileCotent(entry.getValue()));
         }
 
-        Utils.changHeadToHash(commitBeCheckedout.getCommitHashCode());
+        Utils.changeCurrentBranchContent(commitHash);
 
 
     }

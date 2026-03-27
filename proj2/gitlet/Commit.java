@@ -165,10 +165,16 @@ public class Commit implements Serializable, Dumpable {
     }
 
     public static Commit getCurrentCommit() {
-        File currentBranch = new File(BRANCHS_FLODER, Utils.readContentsAsString(HEAD_FILE));
-        File currentCommitFile = new File(COMMITS_FLODER, Utils.readContentsAsString(currentBranch));
-        Commit currentCommit = Utils.readObject(currentCommitFile, Commit.class);
-        return currentCommit;
+
+            File currentBranch = new File(BRANCHS_FLODER, Utils.readContentsAsString(HEAD_FILE));
+
+
+            File currentCommitFile = new File(COMMITS_FLODER, Utils.readContentsAsString(currentBranch));
+            Commit currentCommit = Utils.readObject(currentCommitFile, Commit.class);
+            return currentCommit;
+
+
+
     }
 
     public String getCommitHashCode() {
@@ -250,26 +256,50 @@ public class Commit implements Serializable, Dumpable {
         Commit givenCommit = getGivenBranchCommit(givenBranch);
         Commit currentCommit = getGivenBranchCommit(currentBranch);
 
-        String givenCommitParent = givenCommit.getCommitHashCode();
+        String currentCommitHash = currentCommit.commitHashCode;
+        String givenCommitHash = givenCommit.commitHashCode;
 
+        Queue<String> currentTreeQueue = new LinkedList<>();
+        Set<String> currentTree = new HashSet<>();
 
-        while (true) {
+        currentTreeQueue.add(currentCommitHash);
+        while (!currentTreeQueue.isEmpty()) {
+            String c = currentTreeQueue.poll();
 
-            String currentCommitParent = currentCommit.getCommitHashCode();
+            currentTree.add(c);
 
-            while (true) {
-                if (currentCommitParent == null) {
-                    break;
-                }
-                if (givenCommitParent.equals(currentCommitParent)) {
-                    return givenCommitParent;
-                }
-                currentCommitParent = getGivenHashCommitObj(currentCommitParent).parent;
-
+            if (Commit.getGivenHashCommitObj(c).parent != null) {
+                currentTreeQueue.add(Commit.getGivenHashCommitObj(c).parent);
             }
 
-            givenCommitParent = getGivenHashCommitObj(givenCommitParent).parent;
+            if (Commit.getGivenHashCommitObj(c).secondParent != null) {
+                currentTreeQueue.add(Commit.getGivenHashCommitObj(c).secondParent);
+            }
+
         }
+
+        Queue<String> givenTreeQueue = new LinkedList<>();
+        givenTreeQueue.add(givenCommitHash);
+
+        while (!givenTreeQueue.isEmpty()) {
+            String a = givenTreeQueue.poll();
+
+            if (currentTree.contains(a)) {
+                return a;
+            }
+
+            if (Commit.getGivenHashCommitObj(a).parent != null) {
+                givenTreeQueue.add(Commit.getGivenHashCommitObj(a).parent);
+            }
+
+            if (Commit.getGivenHashCommitObj(a).secondParent != null) {
+                givenTreeQueue.add(Commit.getGivenHashCommitObj(a).secondParent);
+            }
+        }
+
+        return null;
+
+
 
 
     }
