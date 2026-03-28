@@ -121,9 +121,10 @@ public class CommandRepository {
             }
         } else if ((!isStagesIncludeFile)
                 && (isCommitIncludeFile)
-                && (isFileContentEqulsCommitFile)) {
-            //here is empty.
-        } else {
+                && (!isFileContentEqulsCommitFile)) {
+            currentStages.addStageOfAddition(fileName);
+        } else if ((!isStagesIncludeFile)
+                && (!isCommitIncludeFile)) {
             currentStages.addStageOfAddition(fileName);
         }
 
@@ -812,13 +813,19 @@ public class CommandRepository {
         Set<String> allFiles =
                 Commit.getAllFile(currentCommitHash, givenCommitHash, splitPointName);
         for (String fileNameBeExam :  allFiles) {
-            boolean isCurDel = Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName);
-            boolean isCurAdd = Commit.isFileAdded(fileNameBeExam, currentCommitHash, splitPointName);
-            boolean isCurMod = Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName);
+            boolean isCurDel = Commit.isFileDeleted(fileNameBeExam,
+                    currentCommitHash, splitPointName);
+            boolean isCurAdd = Commit.isFileAdded(fileNameBeExam,
+                    currentCommitHash, splitPointName);
+            boolean isCurMod = Commit.isFileModified(fileNameBeExam,
+                    currentCommitHash, splitPointName);
 
-            boolean isGivDel = Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName);
-            boolean isGivAdd = Commit.isFileAdded(fileNameBeExam, givenCommitHash, splitPointName);
-            boolean isGivMod = Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName);
+            boolean isGivDel = Commit.isFileDeleted(fileNameBeExam,
+                    givenCommitHash, splitPointName);
+            boolean isGivAdd = Commit.isFileAdded(fileNameBeExam,
+                    givenCommitHash, splitPointName);
+            boolean isGivMod = Commit.isFileModified(fileNameBeExam,
+                    givenCommitHash, splitPointName);
 
             String curCon = currentCommit.getCommitFileCotentFromName(fileNameBeExam);
             String givCon = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
@@ -826,27 +833,21 @@ public class CommandRepository {
             if (isCurDel && isGivMod) {
                 String unionContent = "<<<<<<< HEAD\n" + "=======\n" + givCon + "\n" + ">>>>>>>";
                 Utils.makeProjectFile(fileNameBeExam, unionContent);
-
                 Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                 isConflict =  true;
-
             } else if (isCurMod && isGivMod
                     && !(currentCommit.getFileHash(fileNameBeExam)
                     .equals(givenCommit.getFileHash(fileNameBeExam)))) {
                 String unionContent = "<<<<<<< HEAD\n" + curCon + "\n" + "=======\n"
                         + givCon + "\n" + ">>>>>>>";
                 Utils.overwriteFileContent(fileNameBeExam, unionContent);
-
                 Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                 isConflict =  true;
-
             } else if (isCurMod && isGivDel) {
                 String unionContent = "<<<<<<< HEAD\n" + curCon + "\n" + "=======\n" + ">>>>>>>";
                 Utils.overwriteFileContent(fileNameBeExam, unionContent);
-
                 Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                 isConflict =  true;
-
             } else if ((!isCurAdd) && isGivAdd) {
                 String unionContent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
                 Utils.makeProjectFile(fileNameBeExam, unionContent);
