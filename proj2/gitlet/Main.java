@@ -48,7 +48,7 @@ public class Main {
                     System.exit(0);
                 }
                 validateNumArgs(args, 2, 2);
-                CommandRepository.commitCommand(args[1]);
+                CommandRepository.commitCommand(args[1], null);
                 break;
 
             case "log":

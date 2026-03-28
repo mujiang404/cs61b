@@ -155,7 +155,7 @@ public class CommandRepository {
 
     }
 
-    public static void commitCommand(String message) {
+    public static void commitCommand(String message, String secondParentHash) {
 
 
 
@@ -175,6 +175,11 @@ public class CommandRepository {
         }
         stagesObject.clearStages();
         stagesObject.storeCurrentStage();
+
+        if (secondParentHash != null) {
+            commit.changeSecondParent(secondParentHash);
+        }
+
         commit.setCommitHashCode();
 
         Utils.changeCurrentBranchContent(commit.getCommitHashCode());
@@ -982,8 +987,8 @@ public class CommandRepository {
                 }
             }
 
-            commitCommand("Merged " + branchName + " into " + currentBranch + ".");
-            Commit.getCurrentCommit().changeSecondParent(givenCommitHash);
+            commitCommand("Merged " + branchName + " into " + currentBranch + ".", givenCommitHash);
+
             if (isConflict) {
                 System.out.println("Encountered a merge conflict.");
             }
