@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 /** Driver class for Gitlet, a subset of the Git version-control system.
- *  @author TODO
+ *  @author
  */
 public class Main {
 
@@ -15,7 +15,7 @@ public class Main {
 
 
 
-        // TODO: what if args is empty?
+
         if (args.length == 0) {
             System.out.println("Please enter a command.");
             System.exit(0);
@@ -26,15 +26,15 @@ public class Main {
 
                 validateNumArgs(args, 1, 1);
                 CommandRepository.init();
-                // TODO: handle the `init` command
+
                 break;
             case "add":
                 isInInitialized();
                 validateNumArgs(args, 2, 2);
                 CommandRepository.add(args[1]);
-                // TODO: handle the `add [filename]` command
+
                 break;
-            // TODO: FILL THE REST IN
+
             case "rm":
                 isInInitialized();
                 validateNumArgs(args, 2, 2);

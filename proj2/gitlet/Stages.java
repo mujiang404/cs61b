@@ -61,7 +61,7 @@ public class Stages implements Serializable {
 
     private Stage getStage(String fileName) {
         for (Stage stage : this.stages.values()) {
-            if(stage.getFileName().equals(fileName)) {
+            if (stage.getFileName().equals(fileName)) {
                 return stage;
             }
         }

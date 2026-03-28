@@ -3,7 +3,7 @@ package gitlet;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.Map;
+
 
 public class Stage implements Serializable {
     private int mode;

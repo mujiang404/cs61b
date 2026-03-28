@@ -1,6 +1,6 @@
 package gitlet;
 
-// TODO: any imports you need here
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,14 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /** Represents a gitlet commit object.
- *  TODO: It's a good idea to give a description here of what else this Class
+
  *  does at a high level.
  *
- *  @author TODO
+ *  @author
  */
 public class Commit implements Serializable, Dumpable {
     /**
-     * TODO: add instance variables here.
+
      *
      * List all instance variables of the Commit class here with a useful
      * comment above them describing what that variable represents and how that
@@ -87,7 +87,7 @@ public class Commit implements Serializable, Dumpable {
 
     }
 
-    /* TODO: fill in the rest of this class. */
+
 
     public String toString() {
         return message + timeStamp + parent + secondParent + filesString();
@@ -114,13 +114,13 @@ public class Commit implements Serializable, Dumpable {
     }
 
     public String makeHashCode() {
-        String commitHashCode = Utils.sha1(this.toString());
-        return commitHashCode;
+        String commitHash = Utils.sha1(this.toString());
+        return commitHash;
     }
 
     public void makeCommitFile() {
-        String commitHashCode = makeHashCode();
-        File commitFile = new File(COMMITS_FLODER, commitHashCode);
+        String commitHash = makeHashCode();
+        File commitFile = new File(COMMITS_FLODER, commitHash);
         try {
             commitFile.createNewFile();
         } catch (IOException e) {
@@ -166,12 +166,12 @@ public class Commit implements Serializable, Dumpable {
 
     public static Commit getCurrentCommit() {
 
-            File currentBranch = new File(BRANCHS_FLODER, Utils.readContentsAsString(HEAD_FILE));
+        File currentBranch = new File(BRANCHS_FLODER, Utils.readContentsAsString(HEAD_FILE));
 
 
-            File currentCommitFile = new File(COMMITS_FLODER, Utils.readContentsAsString(currentBranch));
-            Commit currentCommit = Utils.readObject(currentCommitFile, Commit.class);
-            return currentCommit;
+        File currentCommitFile = new File(COMMITS_FLODER, Utils.readContentsAsString(currentBranch));
+        Commit currentCommit = Utils.readObject(currentCommitFile, Commit.class);
+        return currentCommit;
 
 
 

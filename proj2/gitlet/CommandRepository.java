@@ -24,12 +24,15 @@ public class CommandRepository {
     public static void init() {
 
         if (new File(".gitlet").exists()) {
-            System.out.println("A Gitlet version-control system already exists in the current directory.");
+            System.out.println(
+                    "A Gitlet version-control system already exists" +
+                    " in the current directory."
+            );
             System.exit(0);
         }
 
-        File GitletDir = new File(".gitlet");
-        GitletDir.mkdirs();
+        File gitletDir = new File(".gitlet");
+        gitletDir.mkdirs();
         File head = new File(".gitlet/head");
         try {
             head.createNewFile();
@@ -116,8 +119,9 @@ public class CommandRepository {
                 currentStages.removeStage(fileName);
                 currentStages.addStageOfAddition(fileName);
             }
-        } else if ((!isStagesIncludeFile) && (isCommitIncludeFile) && (isFileContentEqulsCommitFile)) {
-            ;
+        } else if ((!isStagesIncludeFile)
+                && (isCommitIncludeFile)
+                && (isFileContentEqulsCommitFile)) {
         } else {
             currentStages.addStageOfAddition(fileName);
         }
@@ -313,7 +317,9 @@ public class CommandRepository {
 
             if ((!isProjectIncludeFile) && (!isStagesIncludeFile)) {
                 deleteFileNames.add(commitFilename);
-            } else if ((!isProjectIncludeFile) && (isStagesIncludeFile) && (getTheStagesFileMode == 1)) {
+            } else if ((!isProjectIncludeFile)
+                    && (isStagesIncludeFile)
+                    && (getTheStagesFileMode == 1)) {
                 deleteFileNames.add(commitFilename);
             }
         }
@@ -351,11 +357,14 @@ public class CommandRepository {
 
             if (isStagesIncludeFile && (!isFileContentEqulsStagesFile)) {
                 deleteAndModifyFileNames.add(fileName);
-            } else if ((!isStagesIncludeFile) && isCommitIncludeFile && (!isFileContentEqulsCommitFile)) {
+            } else if ((!isStagesIncludeFile)
+                    && isCommitIncludeFile
+                    && (!isFileContentEqulsCommitFile)) {
                 deleteAndModifyFileNames.add(fileName);
             } else if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
                 untrackedFileNames.add(fileName);
-            } else if ((isStagesIncludeFile && getTheStagesFileMode == 0) && isCommitIncludeFile) {
+            } else if ((isStagesIncludeFile && getTheStagesFileMode == 0)
+                    && isCommitIncludeFile) {
                 untrackedFileNames.add(fileName);
             }
 
@@ -505,11 +514,14 @@ public class CommandRepository {
             boolean isUntrackedFileContentEqulsCommitFile = true;
 
             if (isCommitBeCheckedoutedIncludeFile) {
-                isUntrackedFileContentEqulsCommitFile = Utils.getProjectFileHash(untrackedFileName).equals(commitBeCheckedout.getFileHash(untrackedFileName));
+                isUntrackedFileContentEqulsCommitFile =
+                        Utils.getProjectFileHash(untrackedFileName)
+                                .equals(commitBeCheckedout.getFileHash(untrackedFileName));
             }
 
 
-            if (isCommitBeCheckedoutedIncludeFile && !isUntrackedFileContentEqulsCommitFile) {
+            if (isCommitBeCheckedoutedIncludeFile &&
+                    !isUntrackedFileContentEqulsCommitFile) {
                 System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!isCommitBeCheckedoutedIncludeFile) {
@@ -538,105 +550,6 @@ public class CommandRepository {
 
     }
 
-    /*
-
-    public static void checkoutBranch(String branchName) {
-        if (Utils.isCurrentBranch(branchName)) {
-            throw new GitletException("No need to checkout the current branch.");
-        }
-
-        if (!Utils.isBranchExist(branchName)) {
-            throw new GitletException("No such branch exists.");
-        }
-
-        String fileName = null;
-
-        Commit currentCommit = Commit.getCurrentCommit();
-
-        Stages currentStages = Stages.getCurrentStages();
-
-        List<String> projectFileNameList = Utils.plainFilenamesInProject();
-
-
-        List<String> modifyAndUntrackedFileNames = new ArrayList<>();
-
-
-        Set<String> deleteFileNames = new HashSet<>();
-
-        for (String stageFileName : currentStages.getStages().keySet()) {
-            boolean isProjIncludeFile = Utils.isProjectIncludeFile(stageFileName);
-            if (!isProjIncludeFile) {
-                deleteFileNames.add(stageFileName);
-
-            }
-        }
-        for (String commitFilename : currentCommit.getFiles().keySet()) {
-            boolean isProjectIncludeFile = Utils.isProjectIncludeFile(commitFilename);
-            if (!isProjectIncludeFile) {
-                deleteFileNames.add(commitFilename);
-            }
-        }
-
-
-
-        for (String projectName : projectFileNameList) {
-
-
-            boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
-
-            boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
-
-            boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
-
-            boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
-
-            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
-
-            if (isStagesIncludeFile && (!isFileContentEqulsStagesFile)) {
-                modifyAndUntrackedFileNames.add(projectName);
-            } else if (!(isStagesIncludeFile) && isCommitIncludeFile && (!isFileContentEqulsCommitFile)) {
-                modifyAndUntrackedFileNames.add(projectName);
-            } else if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
-                modifyAndUntrackedFileNames.add(projectName);
-            } else if ((isStagesIncludeFile && getTheStagesFileMode == 0) && isCommitIncludeFile) {
-                modifyAndUntrackedFileNames.add(projectName);
-            }
-
-
-        }
-
-        Commit commitBeCheckedout = Commit.getGivenBranchCommit(branchName);
-        for (Map.Entry<String, String> entry : commitBeCheckedout.getFiles().entrySet()) {
-            if (deleteFileNames.contains(entry.getKey())) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-            }
-        }
-
-        for (String fileBeChecked : modifyAndUntrackedFileNames) {
-            if (!(commitBeCheckedout.isExistFile(fileBeChecked))) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-            } else if (!(commitBeCheckedout.isCommitFileProjectFileSame(fileBeChecked))) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-            }
-
-        }
-
-        Utils.changBranch(branchName);
-
-        currentStages.clearStages();
-
-        currentStages.storeCurrentStage();
-
-        Utils.clearCWDFiles();
-
-        for (Map.Entry<String, String> entry : commitBeCheckedout.getFiles().entrySet()) {
-            Utils.makeProjectFile(entry.getKey(), Blob.getGivenFileCotent(entry.getValue()));
-        }
-
-    }
-
-
-     */
 
     public static void branchCommand(String branchName) {
         if (Utils.isBranchExist(branchName)) {

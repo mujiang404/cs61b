@@ -184,9 +184,13 @@ class Utils {
         return plainFilenamesIn(CommandRepository.PROJECT_DIR);
     }
 
-    static List<String> plainFilenamesInCommitFloder() { return plainFilenamesIn(CommandRepository.COMMITS_FLODER);}
+    static List<String> plainFilenamesInCommitFloder() {
+        return plainFilenamesIn(CommandRepository.COMMITS_FLODER);
+    }
 
-    static List<String> plainFilenamesInBranchFloder() { return plainFilenamesIn(CommandRepository.BRANCHS_FLODER);}
+    static List<String> plainFilenamesInBranchFloder() {
+        return plainFilenamesIn(CommandRepository.BRANCHS_FLODER);
+    }
 
 
 

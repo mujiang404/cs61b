@@ -2,7 +2,7 @@ package gitlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+
 
 public class Blob {
     private String fileName;
@@ -25,8 +25,8 @@ public class Blob {
     }
 
     public String makeFileHashCode() {
-        String fileHashCode = Utils.sha1(fileContent);
-        return fileHashCode;
+        String fileHash = Utils.sha1(fileContent);
+        return fileHash;
     }
 
     public void makeFileFile() {
