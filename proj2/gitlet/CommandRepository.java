@@ -922,10 +922,12 @@ public class CommandRepository {
 
 
         if (splitPointName.equals(Commit.getGivenBranchCommit(branchName).getCommitHashCode())) {
+            System.out.println("Given branch is an ancestor of the current branch.");
+
+
+        } else if (splitPointName.equals(Commit.getGivenBranchCommit(currentBranch).getCommitHashCode())) {
             checkoutBranch(branchName);
             System.out.println("Current branch fast-forwarded.");
-        } else if (splitPointName.equals(Commit.getGivenBranchCommit(currentBranch).getCommitHashCode())) {
-            System.out.println("Given branch is an ancestor of the current branch.");
         } else {
             boolean isConflict = false;
 
