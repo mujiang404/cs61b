@@ -642,10 +642,12 @@ public class CommandRepository {
 
 
             if (isCommitBeCheckedoutedIncludeFile && !isUntrackedFileContentEqulsCommitFile) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!isCommitBeCheckedoutedIncludeFile) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first.");
                 System.exit(0);
             }
         }
@@ -724,12 +726,12 @@ public class CommandRepository {
 
 
             if (isCommitBeCheckedoutedIncludeFile && !isUntrackedFileContentEqulsCommitFile) {
-                System.out.println("There is an untracked file in the way; " +
-                        "delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!isCommitBeCheckedoutedIncludeFile) {
-                System.out.println("There is an untracked file in the way; " +
-                        "delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first.");
                 System.exit(0);
             }
         }
@@ -842,17 +844,24 @@ public class CommandRepository {
 
                     }
 
-                } else if ((!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName))
-                        && (!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName))
-                        && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!Commit.isFileDeleted(fileNameBeExam,
+                        currentCommitHash, splitPointName))
+                        && (!Commit.isFileModified(fileNameBeExam,
+                        currentCommitHash, splitPointName))
+                        && Commit.isFileDeleted(fileNameBeExam,
+                        givenCommitHash, splitPointName)) {
 
                     Utils.deleteProjectFile(fileNameBeExam);
                     Stages.stagedForRemovalFromContent(fileNameBeExam);
 
-                } else if ((!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName))
-                        && (!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName))
-                        && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName)) {
-                    String givenCommitCotent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
+                } else if ((!Commit.isFileModified(fileNameBeExam,
+                        currentCommitHash, splitPointName))
+                        && (!Commit.isFileDeleted(fileNameBeExam,
+                        currentCommitHash, splitPointName))
+                        && Commit.isFileModified(fileNameBeExam,
+                        givenCommitHash, splitPointName)) {
+                    String givenCommitCotent = givenCommit
+                            .getCommitFileCotentFromName(fileNameBeExam);
                     Utils.overwriteFileContent(fileNameBeExam, givenCommitCotent);
 
                     Stages.stagedForAdditionFromContent(fileNameBeExam, givenCommitCotent);

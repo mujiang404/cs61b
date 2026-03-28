@@ -61,7 +61,9 @@ public class Commit implements Serializable, Dumpable {
         files = new TreeMap<>();
 
         Date initialTime = new Date(0);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(
+                "EEE MMM d HH:mm:ss yyyy Z", Locale.US
+        );
         this.timeStamp = sdf.format(initialTime);
 
         commitHashCode = makeHashCode();
@@ -74,7 +76,9 @@ public class Commit implements Serializable, Dumpable {
         files = parent.getFiles();
 
         Date currentTime = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM d HH:mm:ss yyyy Z", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(
+                "EEE MMM d HH:mm:ss yyyy Z", Locale.US
+        );
         this.timeStamp = sdf.format(currentTime);
 
 
@@ -166,11 +170,14 @@ public class Commit implements Serializable, Dumpable {
 
     public static Commit getCurrentCommit() {
 
-        File currentBranch = new File(BRANCHS_FLODER, Utils.readContentsAsString(HEAD_FILE));
+        File currentBranch = new File(BRANCHS_FLODER,
+                Utils.readContentsAsString(HEAD_FILE));
 
 
-        File currentCommitFile = new File(COMMITS_FLODER, Utils.readContentsAsString(currentBranch));
-        Commit currentCommit = Utils.readObject(currentCommitFile, Commit.class);
+        File currentCommitFile = new File(COMMITS_FLODER,
+                Utils.readContentsAsString(currentBranch));
+        Commit currentCommit =
+                Utils.readObject(currentCommitFile, Commit.class);
         return currentCommit;
 
 
@@ -204,7 +211,10 @@ public class Commit implements Serializable, Dumpable {
         System.out.println("===");
         System.out.println("commit " +  commitHashCode);
         if (secondParent != null) {
-            System.out.println("Merge: " + parent.substring(0, 7) + " " +  secondParent.substring(0, 7));
+            System.out.println(
+                    "Merge: " + parent.substring(0, 7)
+                            + " " +  secondParent.substring(0, 7)
+            );
         }
         System.out.println("Date: " +  timeStamp);
         System.out.println(message + "\n");
@@ -241,7 +251,8 @@ public class Commit implements Serializable, Dumpable {
     }
 
     public static Commit getGivenBranchCommit(String branchName) {
-        File commitFile = new File(COMMITS_FLODER, Utils.readContentsAsString(Utils.getGivenBranch(branchName)));
+        File commitFile = new File(COMMITS_FLODER,
+                Utils.readContentsAsString(Utils.getGivenBranch(branchName)));
         return Utils.readObject(commitFile, Commit.class);
     }
 
@@ -305,7 +316,8 @@ public class Commit implements Serializable, Dumpable {
 
     }
 
-    public static List<String> findDeleteFileBetween(String currentCommitHash, String givenCommitHash) {
+    public static List<String> findDeleteFileBetween(String currentCommitHash,
+                                                     String givenCommitHash) {
         Commit givenCommit = getGivenHashCommitObj(givenCommitHash);
         Commit currentCommit = getGivenHashCommitObj(currentCommitHash);
 
@@ -320,7 +332,8 @@ public class Commit implements Serializable, Dumpable {
 
     }
 
-    public static List<String> findAddFileBetween(String currentCommitHash, String givenCommitHash) {
+    public static List<String> findAddFileBetween(String currentCommitHash,
+                                                  String givenCommitHash) {
         Commit givenCommit = getGivenHashCommitObj(givenCommitHash);
         Commit currentCommit = getGivenHashCommitObj(currentCommitHash);
 
@@ -346,7 +359,8 @@ public class Commit implements Serializable, Dumpable {
 
 
 
-    public static List<String> findModifyFileBetween(String currentCommitHash, String givenCommitHash) {
+    public static List<String> findModifyFileBetween(String currentCommitHash,
+                                                     String givenCommitHash) {
         Commit givenCommit = getGivenHashCommitObj(givenCommitHash);
         Commit currentCommit = getGivenHashCommitObj(currentCommitHash);
 
@@ -354,22 +368,29 @@ public class Commit implements Serializable, Dumpable {
 
         for (Map.Entry<String, String> entry : currentCommit.getFiles().entrySet()) {
 
-            if (givenCommit.isExistFile(entry.getKey()) && !(entry.getValue().equals(givenCommit.getFiles().get(entry.getKey())))) {
+            if (givenCommit.isExistFile(entry.getKey())
+                    && !(entry.getValue()
+                    .equals(givenCommit.getFiles().get(entry.getKey())))) {
                 modifyFiles.add(entry.getKey());
             }
         }
         return modifyFiles;
     }
 
-    public static boolean isFileDeleted(String fileName, String currentCommitHash, String givenCommitHash) {
-        List<String> deleteFiles = findDeleteFileBetween(currentCommitHash, givenCommitHash);
+    public static boolean isFileDeleted(String fileName,
+                                        String currentCommitHash,
+                                        String givenCommitHash) {
+        List<String> deleteFiles =
+                findDeleteFileBetween(currentCommitHash, givenCommitHash);
         if (deleteFiles.contains(fileName)) {
             return true;
         }
         return false;
     }
 
-    public static boolean isFileAdded(String fileName, String currentCommitHash, String givenCommitHash) {
+    public static boolean isFileAdded(String fileName,
+                                      String currentCommitHash,
+                                      String givenCommitHash) {
         List<String> addFiles = findAddFileBetween(currentCommitHash, givenCommitHash);
         if (addFiles.contains(fileName)) {
             return true;
@@ -377,15 +398,20 @@ public class Commit implements Serializable, Dumpable {
         return false;
     }
 
-    public static boolean isFileModified(String fileName, String currentCommitHash, String givenCommitHash) {
-        List<String> modifyFiles = findModifyFileBetween(currentCommitHash, givenCommitHash);
+    public static boolean isFileModified(String fileName,
+                                         String currentCommitHash,
+                                         String givenCommitHash) {
+        List<String> modifyFiles =
+                findModifyFileBetween(currentCommitHash, givenCommitHash);
         if (modifyFiles.contains(fileName)) {
             return true;
         }
         return false;
     }
 
-    public static Set<String> getAllFile(String currentCommitHash, String givenCommitHash, String splitPoint) {
+    public static Set<String> getAllFile(String currentCommitHash,
+                                         String givenCommitHash,
+                                         String splitPoint) {
         Set<String> allFiles = new HashSet<>();
 
         Commit currentCommit = Commit.getGivenHashCommitObj(currentCommitHash);
