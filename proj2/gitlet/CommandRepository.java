@@ -412,7 +412,7 @@ public class CommandRepository {
 
         if (commitHash.length() == 40) {
             commit = Commit.getGivenHashCommitObj(commitHash);
-        } else if (commitHash.length() == 6) {
+        } else if (commitHash.length() < 40) {
             commit = Commit.getGivenShortenedHashCommitObj(commitHash);
         }
 
@@ -696,7 +696,7 @@ public class CommandRepository {
 
         if (commitHash.length() == 40) {
             commitBeCheckedout = Commit.getGivenHashCommitObj(commitHash);
-        } else if (commitHash.length() == 6) {
+        } else if (commitHash.length() < 40) {
             commitBeCheckedout = Commit.getGivenShortenedHashCommitObj(commitHash);
         }
 
@@ -918,8 +918,9 @@ public class CommandRepository {
 
         if (splitPointName.equals(Commit.getGivenBranchCommit(branchName).getCommitHashCode())) {
             checkoutBranch(currentBranch);
+            System.out.println("Current branch fast-forwarded.");
         } else if (splitPointName.equals(Commit.getGivenBranchCommit(currentBranch).getCommitHashCode())) {
-            return;
+            System.out.println("Given branch is an ancestor of the current branch.");
         } else {
             boolean isConflict = false;
 
@@ -967,12 +968,12 @@ public class CommandRepository {
 
                     }
 
-                } else if ((!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName)) && (!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
 
                     Utils.deleteProjectFile(fileNameBeExam);
                     Stages.stagedForRemovalFromContent(fileNameBeExam);
 
-                } else if ((!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName)) && (!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName)) {
                     String givenCommitCotent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
                     Utils.overwriteFileContent(fileNameBeExam, givenCommitCotent);
 
