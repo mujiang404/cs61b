@@ -204,7 +204,7 @@ public class Commit implements Serializable, Dumpable {
         System.out.println("===");
         System.out.println("commit " +  commitHashCode);
         if (secondParent != null) {
-            System.out.println("Merge: " + parent.substring(0, 8) + " " +  secondParent.substring(0, 8));
+            System.out.println("Merge: " + parent.substring(0, 7) + " " +  secondParent.substring(0, 7));
         }
         System.out.println("Date: " +  timeStamp);
         System.out.println(message + "\n");
