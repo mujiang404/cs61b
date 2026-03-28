@@ -25,8 +25,8 @@ public class CommandRepository {
 
         if (new File(".gitlet").exists()) {
             System.out.println(
-                    "A Gitlet version-control system already exists" +
-                    " in the current directory."
+                    "A Gitlet version-control system already exists"
+                            + " in the current directory."
             );
             System.exit(0);
         }
@@ -122,6 +122,7 @@ public class CommandRepository {
         } else if ((!isStagesIncludeFile)
                 && (isCommitIncludeFile)
                 && (isFileContentEqulsCommitFile)) {
+            //here is empty.
         } else {
             currentStages.addStageOfAddition(fileName);
         }
@@ -337,7 +338,8 @@ public class CommandRepository {
             boolean isFileContentEqulsCommitFile = true;
 
             if (isCommitIncludeFile) {
-                isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+                isFileContentEqulsCommitFile =
+                        (currentCommit.isCommitFileProjectFileSame(fileName));
             }
 
 
@@ -481,7 +483,8 @@ public class CommandRepository {
             boolean isFileContentEqulsCommitFile = true;
 
             if (isCommitIncludeFile) {
-                isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
+                isFileContentEqulsCommitFile =
+                        (currentCommit.isCommitFileProjectFileSame(fileName));
             }
 
 
@@ -509,7 +512,8 @@ public class CommandRepository {
         Commit commitBeCheckedout = Commit.getGivenBranchCommit(branchName);
 
         for (String untrackedFileName : untrackedFileNames) {
-            boolean isCommitBeCheckedoutedIncludeFile = commitBeCheckedout.isExistFile(untrackedFileName);
+            boolean isCommitBeCheckedoutedIncludeFile =
+                    commitBeCheckedout.isExistFile(untrackedFileName);
 
             boolean isUntrackedFileContentEqulsCommitFile = true;
 
@@ -520,12 +524,16 @@ public class CommandRepository {
             }
 
 
-            if (isCommitBeCheckedoutedIncludeFile &&
-                    !isUntrackedFileContentEqulsCommitFile) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+            if (isCommitBeCheckedoutedIncludeFile
+                    && !isUntrackedFileContentEqulsCommitFile) {
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first."
+                );
                 System.exit(0);
             } else if (!isCommitBeCheckedoutedIncludeFile) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; "
+                        + "delete it, or add and commit it first."
+                );
                 System.exit(0);
             }
         }
@@ -613,18 +621,23 @@ public class CommandRepository {
         Commit commitBeCheckedout = null;
 
         if (commitHash.length() == 40) {
-            commitBeCheckedout = Commit.getGivenHashCommitObj(commitHash);
+            commitBeCheckedout =
+                    Commit.getGivenHashCommitObj(commitHash);
         } else if (commitHash.length() < 40) {
-            commitBeCheckedout = Commit.getGivenShortenedHashCommitObj(commitHash);
+            commitBeCheckedout =
+                    Commit.getGivenShortenedHashCommitObj(commitHash);
         }
 
         for (String untrackedFileName : untrackedFileNames) {
-            boolean isCommitBeCheckedoutedIncludeFile = commitBeCheckedout.isExistFile(untrackedFileName);
+            boolean isCommitBeCheckedoutedIncludeFile =
+                    commitBeCheckedout.isExistFile(untrackedFileName);
 
             boolean isUntrackedFileContentEqulsCommitFile = true;
 
             if (isCommitBeCheckedoutedIncludeFile) {
-                isUntrackedFileContentEqulsCommitFile = Utils.getProjectFileHash(untrackedFileName).equals(commitBeCheckedout.getFileHash(untrackedFileName));
+                isUntrackedFileContentEqulsCommitFile =
+                        Utils.getProjectFileHash(untrackedFileName)
+                                .equals(commitBeCheckedout.getFileHash(untrackedFileName));
             }
 
 
@@ -654,112 +667,6 @@ public class CommandRepository {
 
     }
 
-    /*
-
-    public static void resetCommand(String commitHash) {
-        if (!Commit.isCommitExit(commitHash)) {
-            throw new GitletException("No commit with that id exists.");
-        }
-
-
-        String fileName = null;
-
-        Commit currentCommit = Commit.getCurrentCommit();
-
-        Stages currentStages = Stages.getCurrentStages();
-
-        List<String> projectFileNameList = Utils.plainFilenamesInProject();
-
-
-        List<String> modifyAndUntrackedFileNames = new ArrayList<>();
-
-
-        Set<String> deleteFileNames = new HashSet<>();
-
-        for (String stageFileName : currentStages.getStages().keySet()) {
-            boolean isProjIncludeFile = Utils.isProjectIncludeFile(stageFileName);
-            if (!isProjIncludeFile) {
-                deleteFileNames.add(stageFileName);
-
-            }
-        }
-        for (String commitFilename : currentCommit.getFiles().keySet()) {
-            boolean isProjectIncludeFile = Utils.isProjectIncludeFile(commitFilename);
-            if (!isProjectIncludeFile) {
-                deleteFileNames.add(commitFilename);
-            }
-        }
-
-
-
-        for (String projectName : projectFileNameList) {
-
-
-            boolean isFileContentEqulsCommitFile = (currentCommit.isCommitFileProjectFileSame(fileName));
-
-            boolean isCommitIncludeFile = (currentCommit.isExistFile(fileName));
-
-            boolean isStagesIncludeFile = (currentStages.isExistFile(fileName));
-
-            boolean isFileContentEqulsStagesFile = (currentCommit.isCommitFileProjectFileSame(fileName));
-
-            int getTheStagesFileMode = currentStages.modeOfStage(fileName);
-
-            if (isStagesIncludeFile && (!isFileContentEqulsStagesFile)) {
-                modifyAndUntrackedFileNames.add(projectName);
-            } else if (!(isStagesIncludeFile) && isCommitIncludeFile && (!isFileContentEqulsCommitFile)) {
-                modifyAndUntrackedFileNames.add(projectName);
-            } else if ((!isCommitIncludeFile) && (!isStagesIncludeFile)) {
-                modifyAndUntrackedFileNames.add(projectName);
-            } else if ((isStagesIncludeFile && getTheStagesFileMode == 0) && isCommitIncludeFile) {
-                modifyAndUntrackedFileNames.add(projectName);
-            }
-
-
-        }
-
-        Commit commitBeCheckedout = null;
-
-        if (commitHash.length() == 40) {
-            commitBeCheckedout = Commit.getGivenHashCommitObj(commitHash);
-        } else if (commitHash.length() == 6) {
-            commitBeCheckedout = Commit.getGivenShortenedHashCommitObj(commitHash);
-        }
-
-
-        for (Map.Entry<String, String> entry : commitBeCheckedout.getFiles().entrySet()) {
-            if (deleteFileNames.contains(entry.getKey())) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-            }
-        }
-
-        for (String fileBeChecked : modifyAndUntrackedFileNames) {
-            if (!(commitBeCheckedout.isExistFile(fileBeChecked))) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-            } else if (!(commitBeCheckedout.isCommitFileProjectFileSame(fileBeChecked))) {
-                throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-            }
-
-        }
-
-        Utils.changBranch(commitHash);
-
-        currentStages.clearStages();
-
-        currentStages.storeCurrentStage();
-
-        Utils.clearCWDFiles();
-
-        for (Map.Entry<String, String> entry : commitBeCheckedout.getFiles().entrySet()) {
-            Utils.makeProjectFile(entry.getKey(), Blob.getGivenFileCotent(entry.getValue()));
-        }
-
-    }
-
-
-
-
-     */
 
     public static void merge(String branchName) {
         Stages currentStages = Stages.getCurrentStages();
@@ -804,20 +711,25 @@ public class CommandRepository {
         Commit commitBeCheckedout = Commit.getGivenBranchCommit(branchName);
 
         for (String untrackedFileName : untrackedFileNames) {
-            boolean isCommitBeCheckedoutedIncludeFile = commitBeCheckedout.isExistFile(untrackedFileName);
+            boolean isCommitBeCheckedoutedIncludeFile =
+                    commitBeCheckedout.isExistFile(untrackedFileName);
 
             boolean isUntrackedFileContentEqulsCommitFile = true;
 
             if (isCommitBeCheckedoutedIncludeFile) {
-                isUntrackedFileContentEqulsCommitFile = Utils.getProjectFileHash(untrackedFileName).equals(commitBeCheckedout.getFileHash(untrackedFileName));
+                isUntrackedFileContentEqulsCommitFile =
+                        Utils.getProjectFileHash(untrackedFileName)
+                                .equals(commitBeCheckedout.getFileHash(untrackedFileName));
             }
 
 
             if (isCommitBeCheckedoutedIncludeFile && !isUntrackedFileContentEqulsCommitFile) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; " +
+                        "delete it, or add and commit it first.");
                 System.exit(0);
             } else if (!isCommitBeCheckedoutedIncludeFile) {
-                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.out.println("There is an untracked file in the way; " +
+                        "delete it, or add and commit it first.");
                 System.exit(0);
             }
         }
@@ -825,7 +737,8 @@ public class CommandRepository {
         String currentBranch = Utils.getCurrentBranch();
 
 
-        String splitPointName = Commit.getSplitPoint(currentBranch, branchName);
+        String splitPointName =
+                Commit.getSplitPoint(currentBranch, branchName);
 
         Commit givenCommit = Commit.getGivenBranchCommit(branchName);
 
@@ -834,52 +747,93 @@ public class CommandRepository {
         String givenCommitHash = givenCommit.getCommitHashCode();
 
 
-        if (splitPointName.equals(Commit.getGivenBranchCommit(branchName).getCommitHashCode())) {
+        if (splitPointName.equals(
+                Commit.getGivenBranchCommit(branchName)
+                        .getCommitHashCode())) {
             System.out.println("Given branch is an ancestor of the current branch.");
 
 
-        } else if (splitPointName.equals(Commit.getGivenBranchCommit(currentBranch).getCommitHashCode())) {
+        } else if (splitPointName.equals(
+                Commit.getGivenBranchCommit(currentBranch)
+                        .getCommitHashCode())) {
             checkoutBranch(branchName);
             System.out.println("Current branch fast-forwarded.");
         } else {
             boolean isConflict = false;
 
-            Set<String> allFiles = Commit.getAllFile(currentCommitHash, givenCommitHash, splitPointName);
+            Set<String> allFiles =
+                    Commit.getAllFile(currentCommitHash, givenCommitHash, splitPointName);
             for (String fileNameBeExam :  allFiles) {
-                if (Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName) && (Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName))) {
-                    String unionContent = "<<<<<<< HEAD\n" + "=======\n" + givenCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + ">>>>>>>";
+                if (Commit.isFileDeleted(
+                        fileNameBeExam, currentCommitHash, splitPointName)
+                        && (Commit.isFileModified(
+                                fileNameBeExam, givenCommitHash, splitPointName))) {
+                    String unionContent = "<<<<<<< HEAD\n" + "=======\n"
+                            + givenCommit.getCommitFileCotentFromName(fileNameBeExam)
+                            + "\n" + ">>>>>>>";
                     Utils.makeProjectFile(fileNameBeExam, unionContent);
 
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                     isConflict =  true;
 
-                } else if (Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName) && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName) && !(currentCommit.getFileHash(fileNameBeExam).equals(givenCommit.getFileHash(fileNameBeExam)))) {
-                    String unionContent = "<<<<<<< HEAD\n" + currentCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + "=======\n" + givenCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + ">>>>>>>";
+                } else if (Commit.isFileModified(
+                        fileNameBeExam, currentCommitHash, splitPointName)
+                        && Commit.isFileModified(
+                                fileNameBeExam, givenCommitHash, splitPointName)
+                        && !(currentCommit.getFileHash(fileNameBeExam)
+                        .equals(givenCommit.getFileHash(fileNameBeExam)))) {
+                    String unionContent = "<<<<<<< HEAD\n"
+                            + currentCommit.getCommitFileCotentFromName(fileNameBeExam)
+                            + "\n" + "=======\n"
+                            + givenCommit.getCommitFileCotentFromName(fileNameBeExam)
+                            + "\n" + ">>>>>>>";
                     Utils.overwriteFileContent(fileNameBeExam, unionContent);
 
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                     isConflict =  true;
 
-                } else if (Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName) && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
-                    String unionContent = "<<<<<<< HEAD\n" + currentCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + "=======\n" + ">>>>>>>";
+                } else if (Commit
+                        .isFileModified(fileNameBeExam, currentCommitHash, splitPointName)
+                        && Commit
+                        .isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
+                    String unionContent = "<<<<<<< HEAD\n"
+                            + currentCommit.getCommitFileCotentFromName(fileNameBeExam)
+                            + "\n" + "=======\n" + ">>>>>>>";
                     Utils.overwriteFileContent(fileNameBeExam, unionContent);
 
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
                     isConflict =  true;
 
-                } else if ((!(Commit.isFileAdded(fileNameBeExam, currentCommitHash, splitPointName))) && Commit.isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!(Commit
+                        .isFileAdded(fileNameBeExam,
+                                currentCommitHash, splitPointName
+                        )))
+                        && Commit
+                        .isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
 
                     String unionContent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
                     Utils.makeProjectFile(fileNameBeExam, unionContent);
 
                     Stages.stagedForAdditionFromContent(fileNameBeExam, unionContent);
 
-                } else if (Commit.isFileAdded(fileNameBeExam, currentCommitHash, splitPointName) && Commit.isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
-                    boolean isTwoCommitHaveSameFile = currentCommit.getFileHash(fileNameBeExam).equals(givenCommit.getFileHash(fileNameBeExam));
+                } else if (Commit
+                        .isFileAdded(fileNameBeExam, currentCommitHash, splitPointName)
+                        && Commit
+                        .isFileAdded(fileNameBeExam, givenCommitHash, splitPointName)) {
+                    boolean isTwoCommitHaveSameFile =
+                            currentCommit.getFileHash(fileNameBeExam)
+                                    .equals(givenCommit.getFileHash(fileNameBeExam));
                     if (!isTwoCommitHaveSameFile) {
-                        String currentCommitCotent = currentCommit.getCommitFileCotentFromName(fileNameBeExam);
-                        String givenCommitCotent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
-                        String unionContent = "<<<<<<< HEAD\n" + currentCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + "=======\n" + givenCommit.getCommitFileCotentFromName(fileNameBeExam) + "\n" + ">>>>>>>";
+                        String currentCommitCotent =
+                                currentCommit.getCommitFileCotentFromName(fileNameBeExam);
+                        String givenCommitCotent =
+                                givenCommit.getCommitFileCotentFromName(fileNameBeExam);
+                        String unionContent =
+                                "<<<<<<< HEAD\n"
+                                        + currentCommit.getCommitFileCotentFromName(fileNameBeExam)
+                                        + "\n" + "=======\n"
+                                        + givenCommit.getCommitFileCotentFromName(fileNameBeExam)
+                                        + "\n" + ">>>>>>>";
                         Utils.overwriteFileContent(fileNameBeExam, unionContent);
 
 
@@ -888,12 +842,16 @@ public class CommandRepository {
 
                     }
 
-                } else if ((!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName)) && (!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName))
+                        && (!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName))
+                        && Commit.isFileDeleted(fileNameBeExam, givenCommitHash, splitPointName)) {
 
                     Utils.deleteProjectFile(fileNameBeExam);
                     Stages.stagedForRemovalFromContent(fileNameBeExam);
 
-                } else if ((!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName)) && (!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName)) && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName)) {
+                } else if ((!Commit.isFileModified(fileNameBeExam, currentCommitHash, splitPointName))
+                        && (!Commit.isFileDeleted(fileNameBeExam, currentCommitHash, splitPointName))
+                        && Commit.isFileModified(fileNameBeExam, givenCommitHash, splitPointName)) {
                     String givenCommitCotent = givenCommit.getCommitFileCotentFromName(fileNameBeExam);
                     Utils.overwriteFileContent(fileNameBeExam, givenCommitCotent);
 
@@ -902,7 +860,10 @@ public class CommandRepository {
                 }
             }
 
-            commitCommand("Merged " + branchName + " into " + currentBranch + ".", givenCommitHash);
+            commitCommand(
+                    "Merged " + branchName + " into " + currentBranch + ".",
+                    givenCommitHash
+            );
 
             if (isConflict) {
                 System.out.println("Encountered a merge conflict.");
